@@ -2,11 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <a href="#" class="navbar-brand">
-        <img
-          src="../assets/icon-left-font-monochrome-black.svg"
-          alt="logo groupmania"
-          class="col-10 col-lg3"
-        />
+        <router-link to="/"><img src="../assets/icon-left-font-monochrome-black.svg" alt="logo groupmania" class="col-10 col-lg3"/></router-link>
       </a>
       <button
         class="navbar-toggler mt-3 mt-lg-0"
@@ -30,109 +26,32 @@
         />
         <ul class="navbar-nav ml-5">
           <li class="nav-item">
-            <button
-              type="button"
-              class="btn btn-outline-primary rounded-pill mx-lg-2 my-2 my-lg-0"
-              data-bs-toggle="modal"
-              data-bs-target="#modalConnection"
-            >
-              Connection
+            <button xtype="button" class="btn btn-outline-primary rounded-pill mx-lg-2 my-2 my-lg-0" data-bs-toggle="modal" data-bs-target="#modalConnection">
+              <router-link to="/login">Connection</router-link>
             </button>
           </li>
           <li class="nav-item">
-            <button
-              type="button"
-              class="btn btn-outline-primary rounded-pill"
-              data-bs-toggle="modal"
-              data-bs-target="#modalInscription"
-            >
-              Inscription
+            <button type="button" class="btn btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#modalInscription">
+              <router-link to="/signup">Inscription</router-link>
             </button>
           </li>
         </ul>
       </div>
     </div>
   </nav>
-  <!--- -----------------modal connection------------------------>
-  <div
-    class="modal fade"
-    id="modalConnection"
-    tabindex="-1"
-    aria-labelledby="modalConnectionLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalConnectionLabel">Connectez-vous</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Fermer"
-          ></button>
-        </div>
-        <div class="modal-body">...</div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Annuler
-          </button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-bs-dismiss="modal"
-            @click="connection"
-          >
-            Connection
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!--- -----------------modal inscription------------------------>
-  <div
-    class="modal fade"
-    id="modalInscription"
-    tabindex="-1"
-    aria-labelledby="modalInscriptionLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalInscriptionLabel">Inscrivez-vous</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Fermer"
-          ></button>
-        </div>
-        <div class="modal-body">...</div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Annuler
-          </button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            data-bs-dismiss="modal"
-            @click="inscription"
-          >
-            Inscription
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  `
 </template>
+
+
+<script>
+
+export default {
+  name: 'MonHeader',
+  data(){
+    return{
+      loginUsername: '',
+      loginPassword: ' '
+    }
+    
+  }
+}
+</script>
