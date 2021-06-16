@@ -8,7 +8,7 @@
       <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required="" v-model='motdepasse'>
       <div class="checkbox mb-3">
       </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit" @click="signin">Se connecter</button>
+      <button class="btn btn-lg btn-primary btn-block" type="submit" @click.prevent="signin">Se connecter</button>
   </form>
     <br/>
     <h2>{{ msg }}</h2>

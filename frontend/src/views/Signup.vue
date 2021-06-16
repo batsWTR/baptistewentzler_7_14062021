@@ -10,7 +10,7 @@
       <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required="" v-model='motdepasse'>
       <div class="checkbox mb-3">
       </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit" @click="signup">S'inscrire</button>
+      <button class="btn btn-lg btn-primary btn-block" type="submit" @click.prevent="signup">S'inscrire</button>
   </form>
   <br/>
   <h2>{{ msg }}</h2>
