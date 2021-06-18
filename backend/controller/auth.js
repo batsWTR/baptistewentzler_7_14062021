@@ -4,9 +4,6 @@ const jwt = require('jsonwebtoken');
 const env = require('dotenv').config();
 
 
-//mongoose.connect('mongodb+srv://' + process.env.DB_USER + ':' + process.env.DB_PASS + '@cluster0.ufsw1.mongodb.net/' + process.env.DB_COLLECTION + '?retryWrites=true&w=majority',  {useNewUrlParser: true, useUnifiedTopology: true});
-
-
 
 exports.headers = (req, res, next)=>{
     console.log('requete Auth');
@@ -58,7 +55,6 @@ exports.signup = (req, res, next)=>{
     }
 
     
-    res.status(200).json({message:'ok'});
     // cryptage mot de passe
     bcrypt.hash(req.body.password, 10, (err,hash)=>{
         if(err){
@@ -72,11 +68,11 @@ exports.signup = (req, res, next)=>{
         userId: ""
         });*/
 
-        console.log(user.password);
+        console.log("email ",req.body.email,"/ password ",req.body.password, "/ hash ",hash, "/ pseudo ", req.body.pseudo);
         /*user.userId = user._id;
         user.save().then(()=>{res.status(201).json({message: 'creation utilisateur'})}).catch((err)=>{res.status(401).json({message: err})});
         */
-       res.status(200).json( {message: 'ok'});
+        res.status(200).json( {message: 'ok'});
     });
 
 
