@@ -22,7 +22,7 @@
           class="mx-lg-5 my-4 my-lg-0"
           size="45"
           placeholder="Rechercher"
-          v-model="recherche"
+        
         />
         <ul class="navbar-nav ml-5">
           <li class="nav-item">

@@ -12,7 +12,6 @@
   </form>
     <br/>
     <h2>{{ msg }}</h2>
-
 </template>
 
 
@@ -30,7 +29,11 @@ export default {
   methods: {
     signin(){
       if(this.email != '' && this.motdepasse != ''){
-        this.msg = 'envoie au backend'
+        this.msg = 'envoie au backend';
+        this.$store.dispatch('loginAccount',{
+          email: this.email,
+          password: this.motdepasse
+        })
       }
     }
   }

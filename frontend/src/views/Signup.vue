@@ -31,6 +31,11 @@ export default {
     signup(){
       if(this.pseudo != '' && this.email != '' && this.motdepasse != ''){
         this.msg = 'envoie au backend'
+        this.$store.dispatch('createAccount',{
+          pseudo: this.pseudo,
+          email: this.email,
+          password: this.motdepasse
+        })
       }
     }
   }

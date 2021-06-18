@@ -6,6 +6,14 @@ export default createStore({
   mutations: {
   },
   actions: {
+    createAccount:({commit}, userInfo) =>{
+      commit;
+      console.log(userInfo);
+    },
+    loginAccount:({commit},userInfo) =>{
+      commit;
+      console.log(userInfo);
+    }
   },
   modules: {
   }
