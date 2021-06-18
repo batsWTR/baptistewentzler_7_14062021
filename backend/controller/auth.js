@@ -19,7 +19,7 @@ exports.headers = (req, res, next)=>{
 exports.login = (req, res, next)=>{
     console.log('login');
 
-    // regarde si email existe dans la base
+    /* regarde si email existe dans la base
     userSchem.findOne({email: req.body.email}, (err,obj)=>{
         if(!obj){
             return res.status(401).json({message: 'Email inconnu'});
@@ -33,7 +33,9 @@ exports.login = (req, res, next)=>{
         });
         
     });
-
+    */
+   console.log("email ",req.body.email,"/ password ",req.body.password);
+   res.status(200).json({message: "ok"});
         
     
 }
