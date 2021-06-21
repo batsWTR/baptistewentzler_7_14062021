@@ -2,7 +2,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const env = require('dotenv').config();
-
+var mysql = require('mysql');
 
 
 exports.headers = (req, res, next)=>{
@@ -62,19 +62,36 @@ exports.signup = (req, res, next)=>{
         if(err){
             return res.status(401).json({message: err});
         }
-
-        /* crée un nouvel utilisateur
-        const user = new userSchem({
-        email: req.body.email,
-        password: hash,
-        userId: ""
-        });*/
+        // connection a la base
+        var con = mysql.createConnection({
+            host: "mysql-bawee.alwaysdata.net",
+            user: "bawee",
+            password: "W3nTzl3R2020!",
+            database: 'bawee_projet7'
+          });
+          
+          con.connect((err) => {
+            if (err){
+                return res.status(401).json({message: 'impossible de se connecter à la BDD'})
+            }
+            console.log("Connecté à la base de donnée");
+            
+          });
 
         console.log("email ",req.body.email,"/ password ",req.body.password, "/ hash ",hash, "/ pseudo ", req.body.pseudo);
-        /*user.userId = user._id;
-        user.save().then(()=>{res.status(201).json({message: 'creation utilisateur'})}).catch((err)=>{res.status(401).json({message: err})});
-        */
-        res.status(200).json( {message: 'ok'});
+      
+
+        // envoie de la requete à la base
+        con.query("INSERT INTO users VALUES (0,'" + req.body.pseudo + "','" + req.body.email + "','" + hash + "')", function(err,result){
+            if(err){
+                console.log(err.sqlMessage);
+                return res.status(200).json({message: err.sqlMessage});
+            }
+            console.log("Votre compte a été crée");
+            return res.status(200).json( {message: 'Votre compte a été crée'});
+        });
+
+        
     });
 
 
