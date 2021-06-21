@@ -5,7 +5,7 @@
       <label for="inputEmail" class="sr-only">Adresse mail</label>
       <input type="email" id="inputEmail" class="form-control" placeholder="Adresse mail" required="" autofocus="" v-model='email'>
       <label for="inputPassword" class="sr-only">Mot de passe</label>
-      <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required="" v-model='motdepasse'>
+      <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required="" v-model='password'>
       <div class="checkbox mb-3">
       </div>
       <button class="btn btn-lg btn-primary btn-block" type="submit" @click.prevent="signin">Se connecter</button>
@@ -17,24 +17,39 @@
 
 <script>
 
+const axios = require('axios').default;
+
+
 export default {
   name: 'login',
   data() {
     return{
       email: '',
-      motdepasse: '',
+      password: '',
       msg: ''
     }
   },
   methods: {
     signin(){
       if(this.email != '' && this.motdepasse != ''){
-        this.msg = 'envoie au backend';
-        this.$store.dispatch('loginAccount',{
+        
+        /*this.$store.dispatch('loginAccount',{
           email: this.email,
           password: this.motdepasse
-        })
+        })*/
+        axios.post("http://127.0.0.1:3000/api/auth/login",{
+        email:this.email,
+        password: this.password
+      })
+      .then(function (response){
+        console.log(response);
+        
+      })
+      .catch(function (error){
+        console.log(error);
+      })
       }
+      this.msg = 'Vous etes connecté';
     }
   }
 }

@@ -7,7 +7,7 @@
       <label for="inputEmail" class="sr-only">Adresse mail</label>
       <input type="email" id="inputEmail" class="form-control" placeholder="Addresse mail" required="" autofocus="" v-model='email'>
       <label for="inputPassword" class="sr-only">Mot de passe</label>
-      <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required="" v-model='motdepasse'>
+      <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required="" v-model='password'>
       <div class="checkbox mb-3">
       </div>
       <button class="btn btn-lg btn-primary btn-block" type="submit" @click.prevent="signup">S'inscrire</button>
@@ -17,25 +17,42 @@
 </template>
 
 <script>
+
+const axios = require('axios').default;
+
 export default {
   name: 'signup',
   data() {
     return{
         pseudo: '',
         email: '',
-        motdepasse: '',
+        password: '',
         msg: ''
     }
   },
   methods: {
     signup(){
-      if(this.pseudo != '' && this.email != '' && this.motdepasse != ''){
-        this.msg = 'envoie au backend'
-        this.$store.dispatch('createAccount',{
+      if(this.pseudo != '' && this.email != '' && this.password != ''){
+        
+        /*this.$store.dispatch('createAccount',{
           pseudo: this.pseudo,
           email: this.email,
           password: this.motdepasse
-        })
+        })*/
+        // envoie de la demande au backend
+        axios.post("http://127.0.0.1:3000/api/auth/signup",{
+        email:this.email,
+        pseudo: this.pseudo,
+        password:this.password
+      })
+      .then(function (response){
+        console.log(response);
+        this.msg = 'Vous etes connecté'
+      })
+      .catch(function (error){
+        console.log(error);
+        this.msg = 'Un problème est survenu'
+      })
       }
     }
   }
