@@ -6,8 +6,7 @@
       <input type="email" id="inputEmail" class="form-control" placeholder="Adresse mail" required="" autofocus="" v-model='email'>
       <label for="inputPassword" class="sr-only">Mot de passe</label>
       <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required="" v-model='password'>
-      <div class="checkbox mb-3">
-      </div>
+      <div class="checkbox mb-3"></div>
       <button class="btn btn-lg btn-primary btn-block" type="submit" @click.prevent="signin">Se connecter</button>
   </form>
     <br/>

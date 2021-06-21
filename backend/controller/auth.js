@@ -48,12 +48,12 @@ exports.signup = (req, res, next)=>{
     const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
     if(!req.body.email.match(regex)){
-        return res.status(401).json({message: 'Email non valide'});
+        return res.status(200).json({message: 'Email non valide'});
     }
 
     // verifie la longueur du mot de passe
     if(req.body.password.length < 6 || req.body.password.length > 25){
-        return res.status(401).json({message: "Le mot de passe doit contenir de 6 à 25 caractères"});
+        return res.status(200).json({message: "Le mot de passe doit contenir de 6 à 25 caractères"});
     }
 
     
@@ -88,7 +88,7 @@ exports.signup = (req, res, next)=>{
                 return res.status(200).json({message: err.sqlMessage});
             }
             console.log("Votre compte a été crée");
-            return res.status(200).json( {message: 'Votre compte a été crée'});
+            return res.status(200).json( {message: 'OK'});
         });
 
         

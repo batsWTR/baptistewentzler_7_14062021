@@ -11,6 +11,7 @@
       <div class="checkbox mb-3">
       </div>
       <button class="btn btn-lg btn-primary btn-block" type="submit" @click.prevent="signup">S'inscrire</button>
+
   </form>
   <br/>
   <h2>{{ msg }}</h2>
@@ -20,6 +21,7 @@
 
 const axios = require('axios').default;
 
+
 export default {
   name: 'signup',
   data() {
@@ -27,11 +29,12 @@ export default {
         pseudo: '',
         email: '',
         password: '',
-        msg: ''
+        msg: '',
     }
   },
   methods: {
     signup(){
+
       if(this.pseudo != '' && this.email != '' && this.password != ''){
         
         /*this.$store.dispatch('createAccount',{
@@ -39,21 +42,26 @@ export default {
           email: this.email,
           password: this.motdepasse
         })*/
+
         // envoie de la demande au backend
         axios.post("http://127.0.0.1:3000/api/auth/signup",{
         email:this.email,
         pseudo: this.pseudo,
         password:this.password
       })
-      .then(function (response){
-        console.log(response);
-        this.msg = 'Vous etes connecté'
+      .then((response) =>{
+        console.log(response.data.message)
+        this.msg = response.data.message
+        if(response.data.message == 'OK'){
+          this.$router.push('/login')
+        }
+        
       })
-      .catch(function (error){
-        console.log(error);
-        this.msg = 'Un problème est survenu'
+      .catch((error) =>{
+        console.log(error)
       })
       }
+      //this.msg = 'aie'
     }
   }
 }
