@@ -15,22 +15,23 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <input
-          type="text"
-          class="mx-lg-5 my-4 my-lg-0"
-          size="45"
-          placeholder="Rechercher"/>
-        <ul class="navbar-nav ml-5">
+      <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        <ul class="navbar-nav ">
           <li class="nav-item">
             <button type="button" class="btn btn-outline-primary rounded-pill mx-lg-2 my-2 my-lg-0">
               <router-link to="/login">Connection</router-link>
             </button>
           </li>
           <li class="nav-item">
-            <button type="button" class="btn btn-outline-primary rounded-pill" >
+            <button type="button" class="btn btn-outline-primary rounded-pill mb-2 mb-mx-0" >
               <router-link to="/signup">Inscription</router-link>
             </button>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="btn btn-outline-primary rounded-pill mx-md-2  my-md-0 " >
+              <router-link to="/profile"><i class="fas fa-user-circle"></i></router-link>
+            </button>
+            
           </li>
         </ul>
       </div>

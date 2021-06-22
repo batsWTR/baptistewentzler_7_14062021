@@ -5,6 +5,9 @@ const env = require('dotenv').config();
 var mysql = require('mysql');
 
 
+        // connection a la base
+        
+
 exports.headers = (req, res, next)=>{
     console.log('requete Auth');
 
@@ -18,6 +21,46 @@ exports.headers = (req, res, next)=>{
 // verifie les donnees et renvoie un token {email: 'chaine', password: 'chaine'} renvoie {userId: 'chaine', token: 'chaine'}
 exports.login = (req, res, next)=>{
     console.log('login');
+
+    // connection à la bdd
+    var con = mysql.createConnection({
+        host: "mysql-bawee.alwaysdata.net",
+        user: "bawee",
+        password: "W3nTzl3R2020!",
+        database: 'bawee_projet7'
+      });
+
+      con.connect((err) => {
+        if (err){
+            return res.status(401).json({message: 'impossible de se connecter à la BDD'})
+        }
+        console.log("Connecté à la base de donnée");
+        
+      });
+
+      con.query("SELECT * FROM users WHERE mail =  '" + req.body.email + "'", (err, result) =>{
+          if(err){
+              console.log(err)
+              return res.status(401).json({message: err})
+          }
+          if(!result[0]){
+              console.log('pas dans la base')
+              return res.status(200).json({message: "nok"});
+          }
+          console.log(result[0])
+          console.log(result[0].mdp)
+          bcrypt.compare(req.body.password,result[0].mdp, (err,result) =>{
+            if(!result){
+                console.log("mdp non valide")
+                return res.status(401).json({message: 'mot de passe non valide'});
+            }
+            console.log('le mot de passe est valide')
+            res.status(200)
+            //return res.status(200).json({userId: obj.userId, token: jwt.sign({userId: obj.userId}, 'secret_key', {expiresIn: '2h'})});
+            })
+        })
+    }
+
 
     /* regarde si email existe dans la base
     userSchem.findOne({email: req.body.email}, (err,obj)=>{
@@ -34,11 +77,8 @@ exports.login = (req, res, next)=>{
         
     });
     */
-   console.log("email ",req.body.email,"/ password ",req.body.password);
-   res.status(200).json({message: "ok"});
-        
-    
-}
+   //console.log("email ",req.body.email,"/ password ",req.body.password);
+   //res.status(200).json({message: "nok"});
 
 // ajout  utilisateur a la db  {email: 'chaine', password: 'chaine'} renvoie {message: 'chaine'}
 exports.signup = (req, res, next)=>{
@@ -62,7 +102,6 @@ exports.signup = (req, res, next)=>{
         if(err){
             return res.status(401).json({message: err});
         }
-        // connection a la base
         var con = mysql.createConnection({
             host: "mysql-bawee.alwaysdata.net",
             user: "bawee",
