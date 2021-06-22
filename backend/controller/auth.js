@@ -48,8 +48,7 @@ exports.login = (req, res, next)=>{
               return res.status(200).json({erreur: "Vous n'etes pas inscrit"});
           }
           console.log(result[0])
-          console.log(result[0].mdp)
-          console.log(result[0].id)
+
           bcrypt.compare(req.body.password,result[0].mdp, (err,resultat) =>{
             if(!resultat){
                 console.log("mdp non valide")
@@ -60,26 +59,9 @@ exports.login = (req, res, next)=>{
             res.status(200).json({userId: result[0].id, token: jwt.sign({userId:result[0].id}, 'secret_key', {expiresIn: '2h'})});
             })
         })
-    }
+}
 
 
-    /* regarde si email existe dans la base
-    userSchem.findOne({email: req.body.email}, (err,obj)=>{
-        if(!obj){
-            return res.status(401).json({message: 'Email inconnu'});
-        }
-
-        bcrypt.compare(req.body.password, obj.password, (err,result)=>{
-            if(!result){
-                return res.status(401).json({message: 'mot de passe non valide'});
-            }
-            res.status(200).json({userId: obj.userId, token: jwt.sign({userId: obj.userId}, 'secret_key', {expiresIn: '2h'})});
-        });
-        
-    });
-    */
-   //console.log("email ",req.body.email,"/ password ",req.body.password);
-   //res.status(200).json({message: "nok"});
 
 // ajout  utilisateur a la db  {email: 'chaine', password: 'chaine'} renvoie {message: 'chaine'}
 exports.signup = (req, res, next)=>{
@@ -125,6 +107,12 @@ exports.signup = (req, res, next)=>{
         con.query("INSERT INTO users VALUES (0,'" + req.body.pseudo + "','" + req.body.email + "','" + hash + "')", function(err,result){
             if(err){
                 console.log(err.sqlMessage);
+                if(err.sqlMessage.match('mail')){
+                    return res.status(200).json({erreur: 'Cette adresse mail existe deja'});
+                }
+                else if(err.sqlMessage.match('pseudo')){
+                    return res.status(200).json({erreur: 'Ce pseudo est deja pris, choisissez en un autre'});
+                }
                 return res.status(200).json({erreur: err.sqlMessage});
             }
             console.log("Votre compte a été crée");

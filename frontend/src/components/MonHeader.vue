@@ -52,8 +52,7 @@ export default {
   name: 'MonHeader',
   data(){
     return{
-      loginUsername: '',
-      loginPassword: ' '
+
     }
   },
   computed: {
@@ -62,7 +61,6 @@ export default {
   },
   methods:{
     disconnect(){
-      console.log('deconnection')
       this.$store.dispatch('disconnect')
     }
   }
