@@ -18,6 +18,11 @@
       <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
         <ul class="navbar-nav ">
           <li class="nav-item">
+            <button type="button" class="btn btn-outline-primary rounded-pill mx-lg-2 my-2 my-lg-0" v-show="connected" @click="disconnect">
+              Déconnection
+            </button>
+          </li>
+          <li class="nav-item">
             <button type="button" class="btn btn-outline-primary rounded-pill mx-lg-2 my-2 my-lg-0">
               <router-link to="/login">Connection</router-link>
             </button>
@@ -28,7 +33,7 @@
             </button>
           </li>
           <li class="nav-item">
-            <button type="button" class="btn btn-outline-primary rounded-pill mx-md-2  my-md-0 " >
+            <button type="button" class="btn btn-outline-primary rounded-pill mx-md-2  my-md-0" :class='{ disabled : !connected}' >
               <router-link to="/profile"><i class="fas fa-user-circle"></i></router-link>
             </button>
             
@@ -41,6 +46,7 @@
 
 
 <script>
+import { mapState } from 'vuex'
 
 export default {
   name: 'MonHeader',
@@ -49,7 +55,17 @@ export default {
       loginUsername: '',
       loginPassword: ' '
     }
-    
+  },
+  computed: {
+    ...mapState(['connected','token'])
+      
+  },
+  methods:{
+    disconnect(){
+      console.log('deconnection')
+      this.$store.dispatch('disconnect')
+    }
   }
+
 }
 </script>

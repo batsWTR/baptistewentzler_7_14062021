@@ -8,9 +8,10 @@
       <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required="" v-model='password'>
       <div class="checkbox mb-3"></div>
       <button class="btn btn-lg btn-primary btn-block" type="submit" @click.prevent="signin">Se connecter</button>
+      <br/>
+      <div class="alert alert-danger" v-if="error != ''">{{ error}}</div>
   </form>
-    <br/>
-    <h2>{{ msg }}</h2>
+    
 </template>
 
 
@@ -25,7 +26,8 @@ export default {
     return{
       email: '',
       password: '',
-      msg: ''
+      msg: '',
+      error: ''
     }
   },
   methods: {
@@ -40,15 +42,23 @@ export default {
         email:this.email,
         password: this.password
       })
-      .then(function (response){
+      .then((response) =>{
         console.log(response);
-        
+        if(response.data.erreur){
+          this.error = response.data.erreur
+        }
+        if(response.data.userId){
+          this.$store.dispatch('loginAccount',{
+          connected: true,
+          token: response.data.token
+        })
+          this.$router.push('/')
+        }
       })
-      .catch(function (error){
+      .catch((error) =>{
         console.log(error);
       })
       }
-      this.msg = 'Vous etes connecté';
     }
   }
 }

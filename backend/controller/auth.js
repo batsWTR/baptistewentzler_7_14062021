@@ -45,18 +45,19 @@ exports.login = (req, res, next)=>{
           }
           if(!result[0]){
               console.log('pas dans la base')
-              return res.status(200).json({message: "nok"});
+              return res.status(200).json({erreur: "Vous n'etes pas inscrit"});
           }
           console.log(result[0])
           console.log(result[0].mdp)
-          bcrypt.compare(req.body.password,result[0].mdp, (err,result) =>{
-            if(!result){
+          console.log(result[0].id)
+          bcrypt.compare(req.body.password,result[0].mdp, (err,resultat) =>{
+            if(!resultat){
                 console.log("mdp non valide")
-                return res.status(401).json({message: 'mot de passe non valide'});
+                return res.status(200).json({erreur: 'mot de passe non valide'});
             }
             console.log('le mot de passe est valide')
-            res.status(200)
-            //return res.status(200).json({userId: obj.userId, token: jwt.sign({userId: obj.userId}, 'secret_key', {expiresIn: '2h'})});
+            //res.status(200)
+            res.status(200).json({userId: result[0].id, token: jwt.sign({userId:result[0].id}, 'secret_key', {expiresIn: '2h'})});
             })
         })
     }
@@ -88,12 +89,12 @@ exports.signup = (req, res, next)=>{
     const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
     if(!req.body.email.match(regex)){
-        return res.status(200).json({message: 'Email non valide'});
+        return res.status(200).json({erreur: 'Email non valide'});
     }
 
     // verifie la longueur du mot de passe
     if(req.body.password.length < 6 || req.body.password.length > 25){
-        return res.status(200).json({message: "Le mot de passe doit contenir de 6 à 25 caractères"});
+        return res.status(200).json({erreur: "Le mot de passe doit contenir de 6 à 25 caractères"});
     }
 
     
@@ -111,7 +112,7 @@ exports.signup = (req, res, next)=>{
           
           con.connect((err) => {
             if (err){
-                return res.status(401).json({message: 'impossible de se connecter à la BDD'})
+                return res.status(401).json({erreur: 'impossible de se connecter à la BDD'})
             }
             console.log("Connecté à la base de donnée");
             
@@ -124,7 +125,7 @@ exports.signup = (req, res, next)=>{
         con.query("INSERT INTO users VALUES (0,'" + req.body.pseudo + "','" + req.body.email + "','" + hash + "')", function(err,result){
             if(err){
                 console.log(err.sqlMessage);
-                return res.status(200).json({message: err.sqlMessage});
+                return res.status(200).json({erreur: err.sqlMessage});
             }
             console.log("Votre compte a été crée");
             return res.status(200).json( {message: 'OK'});

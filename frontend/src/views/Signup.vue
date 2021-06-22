@@ -11,10 +11,9 @@
       <div class="checkbox mb-3">
       </div>
       <button class="btn btn-lg btn-primary btn-block" type="submit" @click.prevent="signup">S'inscrire</button>
+      <div class="alert alert-danger" role="alert" v-if="error != ''">{{ error }}</div>
 
   </form>
-  <br/>
-  <h2>{{ msg }}</h2>
 </template>
 
 <script>
@@ -30,11 +29,12 @@ export default {
         email: '',
         password: '',
         msg: '',
+        error: ''
     }
   },
   methods: {
     signup(){
-
+      this.error = ''
       if(this.pseudo != '' && this.email != '' && this.password != ''){
         
         /*this.$store.dispatch('createAccount',{
@@ -51,7 +51,11 @@ export default {
       })
       .then((response) =>{
         console.log(response.data.message)
-        this.msg = response.data.message
+        if(response.data.erreur){
+          this.error = response.data.erreur
+        }
+
+
         if(response.data.message == 'OK'){
           this.$router.push('/login')
         }
@@ -61,7 +65,6 @@ export default {
         console.log(error)
       })
       }
-      //this.msg = 'aie'
     }
   }
 }
