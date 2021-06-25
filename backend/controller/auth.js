@@ -56,7 +56,7 @@ exports.login = (req, res, next)=>{
             }
             console.log('le mot de passe est valide')
             //res.status(200)
-            res.status(200).json({userId: result[0].id, token: jwt.sign({userId:result[0].id}, 'secret_key', {expiresIn: '2h'})});
+            res.status(200).json({userId: result[0].id, pseudo: result[0].pseudo, email:result[0].mail, token: jwt.sign({userId:result[0].id}, 'secret_key', {expiresIn: '2h'})});
             })
         })
 }
@@ -104,7 +104,7 @@ exports.signup = (req, res, next)=>{
       
 
         // envoie de la requete à la base
-        con.query("INSERT INTO users VALUES (0,'" + req.body.pseudo + "','" + req.body.email + "','" + hash + "')", function(err,result){
+        con.query("INSERT INTO users VALUES (0,'" + req.body.pseudo + "','" + req.body.email + "','" + hash + "',0)", function(err,result){
             if(err){
                 console.log(err.sqlMessage);
                 if(err.sqlMessage.match('mail')){
@@ -125,7 +125,13 @@ exports.signup = (req, res, next)=>{
 
 }
 
-
+exports.updateProfile = (req, res, next) =>{
+    console.log('update profile');
+    console.log(req.body)
+    console.log(req.file)
+    console.log(req.email)
+    res.status(200).json({message: 'profile updated'})
+}
 exports.error = (err,req,res,next)=>{
     console.log('ERREUR');
 

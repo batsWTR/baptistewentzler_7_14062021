@@ -24,24 +24,26 @@
           </li>
           <li class="nav-item">
             <router-link to="/login">
-            <button type="button" class="btn btn-outline-primary rounded-pill mx-lg-2 my-2 my-lg-0">
+            <button type="button" class="btn btn-outline-primary rounded-pill mx-lg-2 my-2 my-lg-0" v-show="!connected">
               Connection
             </button>
             </router-link>
           </li>
           <li class="nav-item">
             <router-link to="/signup">
-            <button type="button" class="btn btn-outline-primary rounded-pill mb-2 mb-mx-0" >
+            <button type="button" class="btn btn-outline-primary rounded-pill mb-2 mb-mx-0" v-show="!connected">
               Inscription
             </button>
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/profile">
-            <button type="button" class="btn btn-outline-primary rounded-pill mx-md-2  my-md-0" :class='{ disabled : !connected}' >
+            
+            <button type="button" class="btn btn-outline-primary rounded-pill mx-md-2  my-md-0" :class='{ disabled : !connected}'>
+              <router-link to="/profile">
               <i class="fas fa-user-circle"></i>
+              </router-link>
             </button>
-            </router-link>
+            
           </li>
         </ul>
       </div>

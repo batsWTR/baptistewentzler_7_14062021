@@ -1,8 +1,8 @@
 <template>
-    <div class="container light-style flex-grow-1 container-p-y">
+    <div class="container light-style flex-grow-1 container-p-y " v-on="isConnected()">
 
     <h4 class="font-weight-bold py-3 mb-4">
-      Profile utilisateur
+      Profil utilisateur
     </h4>
 
     <div class="card overflow-hidden">
@@ -12,13 +12,13 @@
             <div class="tab-pane fade active show" id="account-general">
 
               <div class="card-body media align-items-center">
-                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="d-block ui-w-80">
+                <img v-bind:src="imageUrl" alt="" class="d-block ui-w-80">
                 <div class="media-body ml-4">
                   <label class="btn btn-outline-primary">
                     Ajouter une photo
-                    <input type="file" class="account-settings-fileinput">
+                    <input type="file" class="account-settings-fileinput" @change="imageFile($event)">
                   </label> &nbsp;
-                  <button type="button" class="btn btn-default md-btn-flat">Effacer</button>
+                  <button type="button" class="btn btn-default md-btn-flat" @click="effaceImage">Effacer</button>
 
                   <div class="text-light small mt-1">Autorisé JPG, GIF or PNG. Max size of 800K</div>
                 </div>
@@ -28,7 +28,7 @@
               <div class="card-body">
                 <div class="form-group">
                   <label class="form-label">Pseudo</label>
-                  <input type="text" class="form-control mb-1" value="nmaxwell">
+                  <input type="text" class="form-control mb-1" :value="pseudo">
                 </div>
                 <div class="form-group">
                   <label class="form-label">Name</label>
@@ -36,7 +36,7 @@
                 </div>
                 <div class="form-group">
                   <label class="form-label">E-mail</label>
-                  <input type="text" class="form-control mb-1" value="nmaxwell@mail.com">
+                  <input type="text" class="form-control mb-1" :value="email">
                 </div>
                 
               </div>
@@ -48,8 +48,8 @@
     </div>
 
     <div class="text-right mt-3">
-      <button type="button" class="btn btn-primary">Enregistrer</button>&nbsp;
-      <button type="button" class="btn btn-default">Annuler</button>
+      <button type="button" class="btn btn-primary" @click="changeProfile">Enregistrer</button>&nbsp;
+      <button type="button" class="btn btn-default" @click="annuler">Annuler</button>
     </div>
 
   </div>
@@ -58,9 +58,63 @@
 
 
 <script>
+import { mapState } from 'vuex';
+
+const axios = require('axios').default;
+const avatar = require('../assets/avatar.png')
 
 export default {
-    name: 'Profile'
+    name: 'Profile',
+    data(){
+      return{
+        imageUrl: avatar,
+        image: avatar,
+        mdp: '1122'
+      }
+    },
+    computed: {
+    ...mapState(['pseudo','email', 'connected', 'token', 'userId'])
+      
+  },
+  methods:{
+    annuler(){
+      this.$router.push('/')
+    },
+    changeProfile(){
+      let formData = new FormData()
+      formData.append('email', this.email)
+      formData.append('userId', this.userId)
+      formData.append('image', this.image)
+
+      console.log(this.pseudo,this.email,this.image,this.mdp)
+      axios.post("http://127.0.0.1:3000/api/auth/updateProfile",formData,
+      {
+        headers:{
+          Authorization: 'Bearer ' + this.token,
+          'Content-Type': 'image/jpeg'
+        }
+      })
+      .then((response) =>{
+        console.log(response);
+        
+      })
+      .catch((error) =>{
+        console.log(error);
+      })
+    },
+    imageFile(event){
+      this.imageUrl = URL.createObjectURL(event.target.files[0])
+      this.image = event.target.files[0]
+    },
+    isConnected(){
+      if(!this.connected){
+        return this.$router.push('/')
+      }
+    },
+    effaceImage(){
+      this.imageUrl = avatar
+    }
+  }
 }
 </script>
 

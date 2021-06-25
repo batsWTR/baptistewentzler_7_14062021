@@ -1,6 +1,8 @@
 const express = require('express');
 const parser = require('body-parser');
 const authCtrl = require('../controller/auth');
+const auth = require('../middleware/auth');
+const upload_file = require('../middleware/upload');
 
 
 const router = express.Router();
@@ -8,6 +10,7 @@ const router = express.Router();
 router.use(authCtrl.headers);
 router.post('/signup', authCtrl.signup);
 router.post('/login',authCtrl.login);
+router.post('/updateProfile',auth, upload_file, authCtrl.updateProfile);
 router.use(authCtrl.error);
 
 

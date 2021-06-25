@@ -33,11 +33,7 @@ export default {
   methods: {
     signin(){
       if(this.email != '' && this.motdepasse != ''){
-        
-        /*this.$store.dispatch('loginAccount',{
-          email: this.email,
-          password: this.motdepasse
-        })*/
+
         axios.post("http://127.0.0.1:3000/api/auth/login",{
         email:this.email,
         password: this.password
@@ -50,7 +46,10 @@ export default {
         if(response.data.userId){
           this.$store.dispatch('loginAccount',{
           connected: true,
-          token: response.data.token
+          token: response.data.token,
+          userId: response.data.userId,
+          pseudo: response.data.pseudo,
+          email: response.data.email
         })
           this.$router.push('/')
         }
