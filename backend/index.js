@@ -10,6 +10,7 @@ const auth = require('./routes/auth');
 const app = express();
 
 app.use(express.json());
+app.use('/images', express.static('images'));
 app.use('/api/auth', auth);
 
 

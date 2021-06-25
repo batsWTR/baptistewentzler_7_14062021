@@ -104,7 +104,7 @@ exports.signup = (req, res, next)=>{
       
 
         // envoie de la requete à la base
-        con.query("INSERT INTO users VALUES (0,'" + req.body.pseudo + "','" + req.body.email + "','" + hash + "',0)", function(err,result){
+        con.query("INSERT INTO users VALUES (0,'" + req.body.pseudo + "','" + req.body.email + "','" + hash + "','http://127.0.0.1:3000/images/avatar.png')", function(err,result){
             if(err){
                 console.log(err.sqlMessage);
                 if(err.sqlMessage.match('mail')){
@@ -127,9 +127,15 @@ exports.signup = (req, res, next)=>{
 
 exports.updateProfile = (req, res, next) =>{
     console.log('update profile');
-    console.log(req.body)
-    console.log(req.file)
-    console.log(req.email)
+    console.log(req.body.email)
+    console.log(req.body.userId)
+    console.log(req.body.pseudo)
+    console.log(req.body.mdp)
+    if(req.file){
+        console.log(req.protocol + '://' + req.get('host') + '/' + req.file.path)
+    }
+   
+
     res.status(200).json({message: 'profile updated'})
 }
 exports.error = (err,req,res,next)=>{

@@ -28,19 +28,17 @@
               <div class="card-body">
                 <div class="form-group">
                   <label class="form-label">Pseudo</label>
-                  <input type="text" class="form-control mb-1" :value="pseudo">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Name</label>
-                  <input type="text" class="form-control" value="Nelle Maxwell">
+                  <input type="text" class="form-control mb-1" v-model="nom" :placeholder="pseudo">
                 </div>
                 <div class="form-group">
                   <label class="form-label">E-mail</label>
-                  <input type="text" class="form-control mb-1" :value="email">
+                  <input type="text" class="form-control mb-1" v-model='mail' :placeholder="email">
                 </div>
-                
+                <div class="form-group">
+                  <label class="form-label">Changez votre mot de passe</label>
+                  <input type="password" class="form-control" v-model="mdp">
+                </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -61,19 +59,23 @@
 import { mapState } from 'vuex';
 
 const axios = require('axios').default;
-const avatar = require('../assets/avatar.png')
+
+
+
+
 
 export default {
     name: 'Profile',
     data(){
       return{
-        imageUrl: avatar,
-        image: avatar,
-        mdp: '1122'
+        image: '',
+        nom: '',
+        mdp: '',
+        mail: ''
       }
     },
     computed: {
-    ...mapState(['pseudo','email', 'connected', 'token', 'userId'])
+    ...mapState(['pseudo','email', 'connected', 'token', 'userId','imageUrl']),
       
   },
   methods:{
@@ -82,11 +84,20 @@ export default {
     },
     changeProfile(){
       let formData = new FormData()
-      formData.append('email', this.email)
       formData.append('userId', this.userId)
-      formData.append('image', this.image)
+      if(this.nom != ''){
+        formData.append('pseudo', this.nom)
+      }
+      if(this.mail != ''){
+        formData.append('email', this.mail)
+      }
+      if(this.mdp != ''){
+        formData.append('mdp', this.mdp)
+      }
+      if(this.image != ''){
+        formData.append('image', this.image)
+      }
 
-      console.log(this.pseudo,this.email,this.image,this.mdp)
       axios.post("http://127.0.0.1:3000/api/auth/updateProfile",formData,
       {
         headers:{
@@ -105,6 +116,7 @@ export default {
     imageFile(event){
       this.imageUrl = URL.createObjectURL(event.target.files[0])
       this.image = event.target.files[0]
+
     },
     isConnected(){
       if(!this.connected){
@@ -112,7 +124,7 @@ export default {
       }
     },
     effaceImage(){
-      this.imageUrl = avatar
+      this.imageUrl = 'http://127.0.0.1:3000/images/avatar.png'
     }
   }
 }
