@@ -131,8 +131,54 @@ exports.updateProfile = (req, res, next) =>{
     console.log(req.body.userId)
     console.log(req.body.pseudo)
     console.log(req.body.mdp)
+
+    // connexion bdd
+    var con = mysql.createConnection({
+        host: "mysql-bawee.alwaysdata.net",
+        user: "bawee",
+        password: "W3nTzl3R2020!",
+        database: 'bawee_projet7'
+      });
+      
+      con.connect((err) => {
+        if (err){
+            return res.status(401).json({erreur: 'impossible de se connecter à la BDD'})
+        }
+        console.log("Connecté à la base de donnée");
+        
+      });
+      // modif pseudo et mail
+      con.query("UPDATE users SET pseudo='" + req.body.pseudo + "', mail='" + req.body.email + "' WHERE id='" + req.body.userId + "'", function(err, result){
+          if(err){
+              console.log(err)
+          }
+          console.log("modif pseudo et mail ok")
+      })
+    // modif avatar
     if(req.file){
         console.log(req.protocol + '://' + req.get('host') + '/' + req.file.path)
+        var ch_avatar = req.protocol + '://' + req.get('host') + '/' + req.file.path
+        con.query("UPDATE users SET avatar='" + ch_avatar + "' WHERE id='" + req.body.userId + "'", function(err, result){
+            if(err){
+                console.log(err)
+            }
+            console.log("modif avatarl ok")
+        })
+    }
+
+    // modif mot de passe
+    if(req.body.mdp){
+        bcrypt.hash(req.body.mdp, 10, (err,hash)=>{
+            if(err){
+                return res.status(401).json({message: err});
+            }
+            con.query("UPDATE users SET mdp='" + hash + "' WHERE id='" + req.body.userId + "'", function(err, result){
+                if(err){
+                    console.log(err)
+                }
+                console.log("modif mot de passe ok")
+            })
+        })
     }
    
 

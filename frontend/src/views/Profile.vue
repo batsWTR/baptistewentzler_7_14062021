@@ -87,9 +87,13 @@ export default {
       formData.append('userId', this.userId)
       if(this.nom != ''){
         formData.append('pseudo', this.nom)
+      }else{
+        formData.append('pseudo', this.pseudo)
       }
       if(this.mail != ''){
         formData.append('email', this.mail)
+      }else{
+        formData.append('email', this.email)
       }
       if(this.mdp != ''){
         formData.append('mdp', this.mdp)
@@ -98,7 +102,7 @@ export default {
         formData.append('image', this.image)
       }
 
-      axios.post("http://127.0.0.1:3000/api/auth/updateProfile",formData,
+      axios.put("http://127.0.0.1:3000/api/auth/updateProfile",formData,
       {
         headers:{
           Authorization: 'Bearer ' + this.token,

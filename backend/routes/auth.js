@@ -10,7 +10,7 @@ const router = express.Router();
 router.use(authCtrl.headers);
 router.post('/signup', authCtrl.signup);
 router.post('/login',authCtrl.login);
-router.post('/updateProfile',auth, upload_file, authCtrl.updateProfile);
+router.put('/updateProfile',auth, upload_file, authCtrl.updateProfile);
 router.use(authCtrl.error);
 
 
