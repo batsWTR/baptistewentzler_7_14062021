@@ -49,7 +49,8 @@ export default {
           token: response.data.token,
           userId: response.data.userId,
           pseudo: response.data.pseudo,
-          email: response.data.email
+          email: response.data.email,
+          imageUrl: response.data.avatar
         })
           this.$router.push('/')
         }

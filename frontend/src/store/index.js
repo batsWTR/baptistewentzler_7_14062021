@@ -9,7 +9,7 @@ export default createStore({
     token: '',
     userId: '',
     pseudo: '',
-    email: ''
+    email: '',
   },
   mutations: {
     CHANGE_CONNECTED(state, val){
@@ -21,20 +21,24 @@ export default createStore({
     ADD_INFO(state, val){
       state.userId = val.userId,
       state.pseudo = val.pseudo,
-      state.email = val.email
+      state.email = val.email,
+      state.imageUrl = val.imageUrl
     }
   },
   actions: {
     loginAccount:({commit},userInfo) =>{
       commit;
-      console.log(userInfo);
-      commit('CHANGE_CONNECTED', userInfo.connected);
-      commit('ADD_TOKEN', userInfo.token);
+      console.log('User Info: ',userInfo)
+      commit('CHANGE_CONNECTED', userInfo.connected)
+      commit('ADD_TOKEN', userInfo.token)
       commit('ADD_INFO', userInfo)
     },
     disconnect:({commit}) =>{
       commit('CHANGE_CONNECTED',false)
       commit('ADD_TOKEN', '')
+    },
+    updateProfile:({commit},userInfo) =>{
+      commit('ADD_INFO', userInfo)
     }
   },
   modules: {

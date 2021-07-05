@@ -12,13 +12,12 @@
             <div class="tab-pane fade active show" id="account-general">
 
               <div class="card-body media align-items-center">
-                <img v-bind:src="imageUrl" alt="" class="d-block ui-w-80">
+                <img v-bind:src="imageUrl" alt="image profil" class="d-block ui-w-80">
                 <div class="media-body ml-4">
                   <label class="btn btn-outline-primary">
                     Ajouter une photo
                     <input type="file" class="account-settings-fileinput" @change="imageFile($event)">
                   </label> &nbsp;
-                  <button type="button" class="btn btn-default md-btn-flat" @click="effaceImage">Effacer</button>
 
                   <div class="text-light small mt-1">Autorisé JPG, GIF or PNG. Max size of 800K</div>
                 </div>
@@ -82,6 +81,7 @@ export default {
     annuler(){
       this.$router.push('/')
     },
+
     changeProfile(){
       let formData = new FormData()
       formData.append('userId', this.userId)
@@ -111,7 +111,17 @@ export default {
       })
       .then((response) =>{
         console.log(response);
-        
+        if(response.data.erreur){
+          this.error = response.data.erreur
+        }
+        if(response.data.userId){
+          this.$store.dispatch('updateProfile',{
+          userId: response.data.userId,
+          pseudo: response.data.pseudo,
+          email: response.data.email,
+          imageUrl: response.data.avatar
+          })
+        }
       })
       .catch((error) =>{
         console.log(error);
@@ -126,10 +136,8 @@ export default {
       if(!this.connected){
         return this.$router.push('/')
       }
-    },
-    effaceImage(){
-      this.imageUrl = 'http://127.0.0.1:3000/images/avatar.png'
     }
+    
   }
 }
 </script>

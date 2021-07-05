@@ -56,7 +56,7 @@ exports.login = (req, res, next)=>{
             }
             console.log('le mot de passe est valide')
             //res.status(200)
-            res.status(200).json({userId: result[0].id, pseudo: result[0].pseudo, email:result[0].mail, token: jwt.sign({userId:result[0].id}, 'secret_key', {expiresIn: '2h'})});
+            res.status(200).json({userId: result[0].id, pseudo: result[0].pseudo, email:result[0].mail,avatar: result[0].avatar, token: jwt.sign({userId:result[0].id}, 'secret_key', {expiresIn: '2h'})});
             })
         })
 }
@@ -151,6 +151,7 @@ exports.updateProfile = (req, res, next) =>{
       con.query("UPDATE users SET pseudo='" + req.body.pseudo + "', mail='" + req.body.email + "' WHERE id='" + req.body.userId + "'", function(err, result){
           if(err){
               console.log(err)
+              return res.status(200).json({message: 'NOK'})
           }
           console.log("modif pseudo et mail ok")
       })
@@ -161,8 +162,9 @@ exports.updateProfile = (req, res, next) =>{
         con.query("UPDATE users SET avatar='" + ch_avatar + "' WHERE id='" + req.body.userId + "'", function(err, result){
             if(err){
                 console.log(err)
+                return res.status(200).json({message: 'NOK'})
             }
-            console.log("modif avatarl ok")
+            console.log("modif avatar ok")
         })
     }
 
@@ -175,6 +177,7 @@ exports.updateProfile = (req, res, next) =>{
             con.query("UPDATE users SET mdp='" + hash + "' WHERE id='" + req.body.userId + "'", function(err, result){
                 if(err){
                     console.log(err)
+                    return res.status(200).json({message: 'NOK'})
                 }
                 console.log("modif mot de passe ok")
             })
@@ -182,7 +185,14 @@ exports.updateProfile = (req, res, next) =>{
     }
    
 
-    res.status(200).json({message: 'profile updated'})
+    con.query("SELECT * FROM users WHERE id =  '" + req.body.userId + "'", (err, result) =>{
+        if(err){
+            console.log(err)
+            return res.status(401).json({message: err})
+        }
+        res.status(200).json({userId:result[0].id, pseudo: result[0].pseudo, email:result[0].mail,avatar: result[0].avatar})
+    })
+    
 }
 exports.error = (err,req,res,next)=>{
     console.log('ERREUR');
