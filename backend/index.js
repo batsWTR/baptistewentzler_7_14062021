@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 app.use('/images', express.static('images'));
 app.use('/api/auth', auth);
-app.use('/',posts);
+app.use('/api',posts);
 
 
 
