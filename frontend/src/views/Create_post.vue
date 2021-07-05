@@ -34,7 +34,7 @@ export default {
     }
   },
     computed: {
-    ...mapState(['token', 'userId']),
+    ...mapState(['token', 'userId', 'token']),
       
   },
   methods: {
@@ -47,9 +47,14 @@ export default {
         content: this.content,
         user: this.userId,
         cat: this.cat_id
+      },{
+        headers:{
+          Authorization: 'Bearer ' + this.token
+        }
       })
       .then(response =>{
         console.log(response)
+        this.$router.push('/')
       })
     }
   },
