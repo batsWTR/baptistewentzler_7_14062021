@@ -42,7 +42,7 @@ exports.getPosts = (req,res,next) =>{
         console.log(result)
         return res.status(200).json(result)
       })
-    
+    con.end()
 }
 
 exports.getUsers = (req,res,next) =>{
@@ -71,6 +71,8 @@ exports.getUsers = (req,res,next) =>{
     console.log(result)
     return res.status(200).json(result)
   })
+
+  con.end()
 }
 
 exports.createPost = (req,res,next) =>{
@@ -100,5 +102,36 @@ exports.createPost = (req,res,next) =>{
     return res.status(200).json({msg: 'ok'})
 
   })
-  
+  con.end()
+}
+
+exports.getCat = (req,res,next) =>{
+  console.log('GET categories')
+
+  var con = mysql.createConnection({
+    host: "mysql-bawee.alwaysdata.net",
+    user: "bawee",
+    password: "W3nTzl3R2020!",
+    database: 'bawee_projet7'
+  });
+
+  con.connect((err) => {
+    if (err){
+        return res.status(401).json({message: 'impossible de se connecter à la BDD'})
+    }
+    console.log("Connecté à la base de donnée");
+    
+  });
+
+  con.query("SELECT * FROM categories", (err, result) =>{
+    if(err){
+      console.log(err)
+      return res.status(401).json({message: err})
+    }
+
+    console.log(result)
+    return res.status(200).json(result)
+  })
+
+  con.end()
 }

@@ -28,9 +28,9 @@ exports.login = (req, res, next)=>{
         user: "bawee",
         password: "W3nTzl3R2020!",
         database: 'bawee_projet7'
-      });
+     });
 
-      con.connect((err) => {
+    con.connect((err) => {
         if (err){
             return res.status(401).json({message: 'impossible de se connecter à la BDD'})
         }
@@ -59,6 +59,7 @@ exports.login = (req, res, next)=>{
             res.status(200).json({userId: result[0].id, pseudo: result[0].pseudo, email:result[0].mail,avatar: result[0].avatar, token: jwt.sign({userId:result[0].id}, 'secret_key', {expiresIn: '2h'})});
             })
         })
+        con.end()
 }
 
 
@@ -118,6 +119,8 @@ exports.signup = (req, res, next)=>{
             console.log("Votre compte a été crée");
             return res.status(200).json( {message: 'OK'});
         });
+
+        con.end()
 
         
     });
@@ -190,9 +193,10 @@ exports.updateProfile = (req, res, next) =>{
             console.log(err)
             return res.status(401).json({message: err})
         }
-        res.status(200).json({userId:result[0].id, pseudo: result[0].pseudo, email:result[0].mail,avatar: result[0].avatar})
+        return res.status(200).json({userId:result[0].id, pseudo: result[0].pseudo, email:result[0].mail,avatar: result[0].avatar})
     })
     
+    con.end()
 }
 exports.error = (err,req,res,next)=>{
     console.log('ERREUR');

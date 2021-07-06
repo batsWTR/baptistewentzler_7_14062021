@@ -19,33 +19,8 @@
             </div>
             <!-- /Inner sidebar header -->
 
-            <!-- Inner sidebar body -->
-            <div class="inner-sidebar-body p-0">
-                <div class="p-3 h-100" data-simplebar="init">
-                    <div class="simplebar-wrapper" style="margin: -16px;">
-                        <div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div>
-                        <div class="simplebar-mask">
-                            <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
-                                <div class="simplebar-content-wrapper" style="height: 100%; overflow: hidden scroll;">
-                                    <div class="simplebar-content" style="padding: 16px;">
-                                        <nav class="nav nav-pills nav-gap-y-1 flex-column">
-                                            <a href="javascript:void(0)" class="nav-link nav-link-faded has-icon active">Tous</a>
-                                            <a href="javascript:void(0)" class="nav-link nav-link-faded has-icon">Popular this week</a>
-                                            <a href="javascript:void(0)" class="nav-link nav-link-faded has-icon">Popular all time</a>
-                                            <a href="javascript:void(0)" class="nav-link nav-link-faded has-icon">Solved</a>
-                                            <a href="javascript:void(0)" class="nav-link nav-link-faded has-icon">Unsolved</a>
-                                            <a href="javascript:void(0)" class="nav-link nav-link-faded has-icon">No replies yet</a>
-                                        </nav>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="simplebar-placeholder" style="width: 234px; height: 292px;"></div>
-                    </div>
-                    <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div>
-                    <div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 151px; display: block; transform: translate3d(0px, 0px, 0px);"></div></div>
-                </div>
-            </div>
+            <!-- Liste categories -->
+            <ListeCategories v-bind:listeCategories="listeCat"/>
             <!-- /Inner sidebar body -->
         </div>
         <!-- /Inner sidebar -->
@@ -71,8 +46,8 @@
             <!-- Inner main body -->
 
             <!-- Liste des posts -->
-            <ListePosts />
-                <router-view />
+            <ListePosts v-bind:listeDesPosts="listePosts" v-bind:listeDesUsers="listeUsers"/>
+         
 
        
 
@@ -172,18 +147,47 @@
 <script>
 
 import { mapState } from 'vuex'
-import ListePosts from '../components/Liste_posts.vue';
-
+import ListePosts from '../components/Liste_posts.vue'
+import ListeCategories from '../components/Liste_categories.vue'
+import axios from "axios";
 
 export default {
   name: 'Home',
+  data(){
+      return{
+          listeCat: [],
+          listePosts: [],
+          listeUsers: []
+      }
+  },
   computed: {
-    ...mapState(['connected'])
-      
+    ...mapState(['connected'])   
   },
   components: {
-      ListePosts
+      ListePosts,
+      ListeCategories
   },
+  mounted(){
+        axios.get('http://127.0.0.1:3000/api/categories')
+        .then(response =>{
+            for(let cat of response.data){
+                this.listeCat.push({id: cat.id, name: cat.name})
+            }
+
+        })
+        axios.get('http://127.0.0.1:3000/api/posts')
+      .then(response =>{
+          //console.log(response.data)
+          this.listePosts = response.data
+      })
+      axios.get('http://127.0.0.1:3000/api/users')
+      .then(response =>{
+          //console.log(response.data)
+          for(let user of response.data){
+              this.listeUsers[user.id] = {pseudo: user.pseudo, avatar:user.avatar}
+          }
+      })
+    }
 
 }
 </script>
