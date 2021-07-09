@@ -8,8 +8,8 @@
                                 <div class="simplebar-content-wrapper" style="height: 100%; overflow: hidden scroll;">
                                     <div class="simplebar-content" style="padding: 16px;">
                                         <nav class="nav nav-pills nav-gap-y-1 flex-column">
-                                            <a href="javascript:void(0)" class="nav-link nav-link-faded has-icon active">Tous</a>
-                                            <a href="javascript:void(0)" class="nav-link nav-link-faded has-icon" v-for="cat in listeCategories" :key="cat">{{ cat.name }}</a>
+                                            <a href="javascript:void(0)" class="nav-link nav-link-faded has-icon active" @click="clickCat(0)">Tous</a>
+                                            <a href="javascript:void(0)" class="nav-link nav-link-faded has-icon" @click="clickCat(cat.id)" v-for="cat in listeCategories" :key="cat">{{ cat.name }}</a>
                                         </nav>
                                     </div>
                                 </div>
@@ -34,8 +34,15 @@ export default {
         return{
         }
     },
-    props: ['listeCategories']
+    props: ['listeCategories'],
+    methods:{
+        clickCat(id){
+            
+            this.$emit('selected-cat', id)
+        }
+    }
     
 
 }
 </script>
+!

@@ -17,36 +17,24 @@
                 </button>
                 </router-link>
             </div>
-            <!-- /Inner sidebar header -->
+
 
             <!-- Liste categories -->
-            <ListeCategories v-bind:listeCategories="listeCat"/>
+            <ListeCategories v-bind:listeCategories="listeCat" @selected-cat="selectedCat"/>
             <!-- /Inner sidebar body -->
         </div>
         <!-- /Inner sidebar -->
 
         <!-- Inner main -->
         <div class="inner-main">
-            <!-- Inner main header -->
-            <div class="inner-main-header">
-                <a class="nav-link nav-icon rounded-circle nav-link-faded mr-3 d-md-none" href="#" data-toggle="inner-sidebar"><i class="material-icons">arrow_forward_ios</i></a>
-                <select class="custom-select custom-select-sm w-auto mr-1">
-                    <option selected="">Latest</option>
-                    <option value="1">Popular</option>
-                    <option value="3">Solved</option>
-                    <option value="3">Unsolved</option>
-                    <option value="3">No Replies Yet</option>
-                </select>
-                <span class="input-icon input-icon-sm ml-auto w-auto">
-                    <input type="text" class="form-control form-control-sm bg-gray-200 border-gray-200 shadow-none mb-4 mt-4" placeholder="Search forum" />
-                </span>
-            </div>
+            <!-- Barre de recherche -->
+            <Recherche v-bind:listeCategories="listeCat"/>
             <!-- /Inner main header -->
 
             <!-- Inner main body -->
 
             <!-- Liste des posts -->
-            <ListePosts v-bind:listeDesPosts="listePosts" v-bind:listeDesUsers="listeUsers"/>
+            <ListePosts v-bind:listeDesPosts="listePosts"/>
          
 
        
@@ -109,37 +97,6 @@
         <!-- /Inner main -->
     </div>
 
-    <!-- New Thread Modal -->
-    <div class="modal fade" id="threadModal" tabindex="-1" role="dialog" aria-labelledby="threadModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header d-flex align-items-center bg-primary text-white">
-                        <h6 class="modal-title mb-0" id="threadModalLabel">New Discussion</h6>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="threadTitle">Title</label>
-                            <input type="text" class="form-control" id="threadTitle" placeholder="Enter title" autofocus="" />
-                        </div>
-                        <textarea class="form-control summernote" style="display: none;"></textarea>
-
-                        <div class="custom-file form-control-sm mt-3" style="max-width: 300px;">
-                            <input type="file" class="custom-file-input" id="customFile" multiple="" />
-                            <label class="custom-file-label" for="customFile">Attachment</label>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary">Post</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 </div>
 </div>
 </template>
@@ -149,6 +106,7 @@
 import { mapState } from 'vuex'
 import ListePosts from '../components/Liste_posts.vue'
 import ListeCategories from '../components/Liste_categories.vue'
+import Recherche from '../components/Recherche.vue'
 import axios from "axios";
 
 export default {
@@ -165,7 +123,20 @@ export default {
   },
   components: {
       ListePosts,
-      ListeCategories
+      ListeCategories,
+      Recherche
+  },
+  methods: {
+      selectedCat(e){
+          console.log('Cat id: ', e)
+          axios.get('http://127.0.0.1:3000/api/postsById/'+ e)
+          .then(response =>{
+              this.listePosts = response.data
+          })
+          .catch((error) =>{
+        console.log('CAT ',error);
+      })
+      }
   },
   mounted(){
         axios.get('http://127.0.0.1:3000/api/categories')
@@ -180,13 +151,7 @@ export default {
           //console.log(response.data)
           this.listePosts = response.data
       })
-      axios.get('http://127.0.0.1:3000/api/users')
-      .then(response =>{
-          //console.log(response.data)
-          for(let user of response.data){
-              this.listeUsers[user.id] = {pseudo: user.pseudo, avatar:user.avatar}
-          }
-      })
+
     }
 
 }

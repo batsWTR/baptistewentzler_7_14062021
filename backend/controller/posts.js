@@ -34,7 +34,7 @@ exports.getPosts = (req,res,next) =>{
         
       });
 
-      con.query("SELECT * FROM `posts`", (err,result) =>{
+      con.query("SELECT posts.id, title, content, creation, pseudo, avatar FROM `posts` INNER JOIN users ON posts.user_id = users.id", (err,result) =>{
         if(err){
             console.log(err)
             return res.status(401).json({message: err})
@@ -43,6 +43,50 @@ exports.getPosts = (req,res,next) =>{
         return res.status(200).json(result)
       })
     con.end()
+}
+
+exports.getPostsById = (req,res,next) =>{
+  console.log('GET postsById ', req.params.catId)
+
+  var con = mysql.createConnection({
+    host: "mysql-bawee.alwaysdata.net",
+    user: "bawee",
+    password: "W3nTzl3R2020!",
+    database: 'bawee_projet7'
+  });
+
+  con.connect((err) => {
+    if (err){
+        return res.status(401).json({message: 'impossible de se connecter à la BDD'})
+    }
+    console.log("Connecté à la base de donnée");
+    
+  })
+
+  if(req.params.catId == 0){
+    con.query("SELECT posts.id, title, content, creation, pseudo, avatar FROM `posts` INNER JOIN users ON posts.user_id = users.id", (err,result) =>{
+      if(err){
+          console.log(err)
+          return res.status(401).json({message: err})
+      }
+      console.log(result)
+      return res.status(200).json(result)
+    })
+  }else{
+    con.query("SELECT posts.id, title, content, creation, pseudo, avatar FROM `posts` INNER JOIN users ON posts.user_id = users.id WHERE category_id = " + req.params.catId + "", (err,result)=>{
+      if(err){
+        console.log(err)
+        return res.status(401).json({message: err})
+      }
+      console.log(result)
+      return res.status(200).json(result)
+    })
+  }
+
+
+  
+
+  
 }
 
 exports.getUsers = (req,res,next) =>{
