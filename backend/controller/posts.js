@@ -34,7 +34,7 @@ exports.getPosts = (req,res,next) =>{
         
       });
 
-      con.query("SELECT posts.id, title, content, creation, pseudo, avatar FROM `posts` INNER JOIN users ON posts.user_id = users.id", (err,result) =>{
+      con.query("SELECT posts.id, title, content, creation, pseudo, avatar FROM `posts` INNER JOIN users ON posts.user_id = users.id ORDER BY creation DESC", (err,result) =>{
         if(err){
             console.log(err)
             return res.status(401).json({message: err})

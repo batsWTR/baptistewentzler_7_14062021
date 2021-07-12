@@ -1,7 +1,7 @@
 <template>
   <form class="form-signin">
       <img class="mb-4" src="../assets/icon.svg" alt="" width="72" height="72">
-      <h1 class="h3 mb-3 font-weight-normal">Connection</h1>
+      <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
       <label for="inputEmail" class="sr-only">Adresse mail</label>
       <input type="email" id="inputEmail" class="form-control" placeholder="Adresse mail" required="" autofocus="" v-model='email'>
       <label for="inputPassword" class="sr-only">Mot de passe</label>

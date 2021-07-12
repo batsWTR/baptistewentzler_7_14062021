@@ -25,7 +25,7 @@
           <li class="nav-item">
             <router-link to="/login">
             <button type="button" class="btn btn-outline-primary rounded-pill mx-lg-2 my-2 my-lg-0" v-show="!connected">
-              Connection
+              Connexion
             </button>
             </router-link>
           </li>
