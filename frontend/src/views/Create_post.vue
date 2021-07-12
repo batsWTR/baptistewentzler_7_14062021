@@ -1,18 +1,18 @@
 <template>
-  <form>
+  <form class="newPost">
     <div class="d-flex align-items-center bg-primary text-white">
       <h6 class="modal-title mb-0" id="threadModalLabel">Nouveau post</h6>
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label for="threadTitle">Title</label>
-        <input type="text" class="form-control" id="threadTitle" placeholder="Enter title" autofocus="" v-model="title"/>
+        <label for="threadTitle">Titre</label>
+        <input type="text" class="form-control" id="threadTitle" placeholder="Entrez un titre" autofocus="" v-model="title"/>
       </div>
       <textarea class="form-control summernote" v-model="content"></textarea>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-light" data-dismiss="modal" @click.prevent="annuler">
-        Cancel
+        Annuler
       </button>
       <button type="button" class="btn btn-primary" @click.prevent="post">Post</button>
     </div>
@@ -60,3 +60,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.newPost {
+    width: 100%;
+    max-width: 630px;
+    padding: 15px;
+    margin: 0 auto;
+    text-align: center;
+}
+</style>

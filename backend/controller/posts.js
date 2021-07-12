@@ -1,6 +1,12 @@
 var mysql = require('mysql');
+const env = require('dotenv').config();
 
-
+var mysqlLogin = {
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DB
+}
 
 
 
@@ -19,12 +25,7 @@ exports.headers = (req, res, next)=>{
 exports.getPosts = (req,res,next) =>{
     console.log('GET posts')
 
-    var con = mysql.createConnection({
-        host: "mysql-bawee.alwaysdata.net",
-        user: "bawee",
-        password: "W3nTzl3R2020!",
-        database: 'bawee_projet7'
-      });
+    var con = mysql.createConnection(mysqlLogin);
 
       con.connect((err) => {
         if (err){
@@ -48,12 +49,7 @@ exports.getPosts = (req,res,next) =>{
 exports.getPostsById = (req,res,next) =>{
   console.log('GET postsById ', req.params.catId)
 
-  var con = mysql.createConnection({
-    host: "mysql-bawee.alwaysdata.net",
-    user: "bawee",
-    password: "W3nTzl3R2020!",
-    database: 'bawee_projet7'
-  });
+  var con = mysql.createConnection(mysqlLogin);
 
   con.connect((err) => {
     if (err){
@@ -92,12 +88,7 @@ exports.getPostsById = (req,res,next) =>{
 exports.getUsers = (req,res,next) =>{
   console.log('GET users')
 
-  var con = mysql.createConnection({
-    host: "mysql-bawee.alwaysdata.net",
-    user: "bawee",
-    password: "W3nTzl3R2020!",
-    database: 'bawee_projet7'
-  });
+  var con = mysql.createConnection(mysqlLogin);
 
   con.connect((err) => {
     if (err){
@@ -122,12 +113,7 @@ exports.getUsers = (req,res,next) =>{
 exports.createPost = (req,res,next) =>{
   console.log('POST createPost')
 
-  var con = mysql.createConnection({
-    host: "mysql-bawee.alwaysdata.net",
-    user: "bawee",
-    password: "W3nTzl3R2020!",
-    database: 'bawee_projet7'
-  });
+  var con = mysql.createConnection(mysqlLogin);
 
   con.connect((err) => {
     if (err){
@@ -152,12 +138,7 @@ exports.createPost = (req,res,next) =>{
 exports.getCat = (req,res,next) =>{
   console.log('GET categories')
 
-  var con = mysql.createConnection({
-    host: "mysql-bawee.alwaysdata.net",
-    user: "bawee",
-    password: "W3nTzl3R2020!",
-    database: 'bawee_projet7'
-  });
+  var con = mysql.createConnection(mysqlLogin);
 
   con.connect((err) => {
     if (err){

@@ -48,6 +48,9 @@
       <button type="button" class="btn btn-primary" @click="changeProfile">Enregistrer</button>&nbsp;
       <button type="button" class="btn btn-default" @click="annuler">Annuler</button>
     </div>
+    <div class="text-right mt-3">
+      <button type="button" class="btn btn-primary" @click="supprimer">Supprimer mon compte</button>
+    </div>
 
   </div>
 </template>
@@ -125,6 +128,24 @@ export default {
       })
       .catch((error) =>{
         console.log(error);
+      })
+    },
+    supprimer(){
+      console.log('Suppression du compte')
+
+      axios.delete("http://127.0.0.1:3000/api/auth/deleteUser/" + this.userId,{
+        headers:{
+          Authorization: 'Bearer ' + this.token
+
+        }
+      })
+      .then(response =>{
+        console.log(response)
+        this.$store.dispatch('disconnect')
+        this.$router.push('/')
+      })
+      .catch(err =>{
+        console.log(err)
       })
     },
     imageFile(event){

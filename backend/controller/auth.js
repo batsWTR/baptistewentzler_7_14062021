@@ -3,10 +3,17 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const env = require('dotenv').config();
 var mysql = require('mysql');
+const fs = require('fs');
 
 
-        // connection a la base
-        
+
+var mysqlLogin = {
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DB
+}
+    
 
 exports.headers = (req, res, next)=>{
     console.log('requete Auth');
@@ -23,12 +30,7 @@ exports.login = (req, res, next)=>{
     console.log('login');
 
     // connection à la bdd
-    var con = mysql.createConnection({
-        host: "mysql-bawee.alwaysdata.net",
-        user: "bawee",
-        password: "W3nTzl3R2020!",
-        database: 'bawee_projet7'
-     });
+    var con = mysql.createConnection(mysqlLogin);
 
     con.connect((err) => {
         if (err){
@@ -86,12 +88,7 @@ exports.signup = (req, res, next)=>{
         if(err){
             return res.status(401).json({message: err});
         }
-        var con = mysql.createConnection({
-            host: "mysql-bawee.alwaysdata.net",
-            user: "bawee",
-            password: "W3nTzl3R2020!",
-            database: 'bawee_projet7'
-          });
+        var con = mysql.createConnection(mysqlLogin);
           
           con.connect((err) => {
             if (err){
@@ -136,12 +133,7 @@ exports.updateProfile = (req, res, next) =>{
     console.log(req.body.mdp)
 
     // connexion bdd
-    var con = mysql.createConnection({
-        host: "mysql-bawee.alwaysdata.net",
-        user: "bawee",
-        password: "W3nTzl3R2020!",
-        database: 'bawee_projet7'
-      });
+    var con = mysql.createConnection(mysqlLogin);
       
       con.connect((err) => {
         if (err){
@@ -197,6 +189,36 @@ exports.updateProfile = (req, res, next) =>{
     })
     
     con.end()
+}
+
+exports.deleteUser = (req, res, next) =>{
+    console.log('Delete user: ', req.params.id)
+
+    // connexion bdd
+    var con = mysql.createConnection(mysqlLogin);
+      
+      con.connect((err) => {
+        if (err){
+            return res.status(401).json({erreur: 'impossible de se connecter à la BDD'})
+        }
+        console.log("Connecté à la base de donnée");
+        
+      });
+
+    con.query("DELETE FROM users WHERE id = '" + req.params.id + "'", (err, result) =>{
+        if(err){
+            console.log(err)
+            return res.status(200).json({message: 'NOK'})
+        }
+        fs.unlink('./images/' + req.params.id, (url,err) =>{
+            if(err){
+                return console.log(err)
+            }
+            console.log('Suppression image: ')
+        } )
+        return res.status(200).json({message: 'ok'})
+    })
+    
 }
 exports.error = (err,req,res,next)=>{
     console.log('ERREUR');
