@@ -12,6 +12,7 @@ router.get('/posts',posts_ctrl.getPosts)
 router.get('/postsById/:catId', posts_ctrl.getPostsById)
 router.get('/users', posts_ctrl.getUsers)
 router.get('/categories', posts_ctrl.getCat)
+router.post('/addCategory',auth, posts_ctrl.addCategory)
 router.post('/createPost',auth, posts_ctrl.createPost)
 
 

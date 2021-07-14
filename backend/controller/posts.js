@@ -129,7 +129,7 @@ exports.createPost = (req,res,next) =>{
       return res.status(401).json({message: err})
     }
 
-    return res.status(200).json({msg: 'ok'})
+    return res.status(200).json({message: 'ok'})
 
   })
   con.end()
@@ -159,4 +159,30 @@ exports.getCat = (req,res,next) =>{
   })
 
   con.end()
+}
+
+exports.addCategory = (req, res, next) =>{
+  console.log('Ajout categorie')
+
+  var con = mysql.createConnection(mysqlLogin);
+
+  con.connect((err) => {
+    if (err){
+        return res.status(401).json({message: 'impossible de se connecter à la BDD'})
+    }
+    console.log("Connecté à la base de donnée");
+    
+  });
+
+  console.log(req.body.category)
+
+  con.query("INSERT INTO categories (name) VALUES ('" + req.body.category + "')", (err,result) =>{
+    if(err){
+      console.log(err)
+      return res.status(401).json({message: err})
+    }
+    return res.status(200).json({message: 'ok'})
+  })
+
+  
 }

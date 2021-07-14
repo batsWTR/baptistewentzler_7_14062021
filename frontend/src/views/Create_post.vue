@@ -10,7 +10,26 @@
           <option v-for="cat in listeCat" :value="cat.id" :key="cat"> {{ cat.name }}</option>
         </select>
         <div>
-          <button class="btn btn-primary">Ajouter une categorie</button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCat">Ajouter une categorie</button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="addCat" tabindex="-1" aria-labelledby="ajout_categorie" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="ajout_categorie">Ajouter une categorie</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <input v-model="newCat"/>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="addCat">Ajouter</button>
+              </div>
+            </div>
+          </div>
         </div>
         
       </div>
@@ -41,11 +60,12 @@ export default {
       title:'',
       content:'',
       cat_id: 1,
+      newCat: '',
       listeCat: [],
     }
   },
     computed: {
-    ...mapState(['token', 'userId', 'token']),
+    ...mapState(['token', 'userId']),
       
   },
   methods: {
@@ -68,10 +88,34 @@ export default {
         console.log(response)
         this.$router.push('/')
       })
-    }
+    },
+    addCat(){
+    console.log('ajouter categorie: ', this.newCat)
+
+    axios.post('http://127.0.0.1:3000/api/addCategory',{
+      category: this.newCat
+    },{
+      headers:{
+          Authorization: 'Bearer ' + this.token
+        }
+    })
+    .then(response =>{
+        console.log(response)
+        this.newCat = ''
+        this.listeCat = []
+        
+        axios.get('http://127.0.0.1:3000/api/categories')
+        .then(response =>{
+            for(let cat of response.data){
+                this.listeCat.push({id: cat.id, name: cat.name})
+            }
+            console.log(this.listeCat)
+        })
+      })
+
+  }
   },
   mounted(){
-
     axios.get('http://127.0.0.1:3000/api/categories')
         .then(response =>{
             for(let cat of response.data){
@@ -79,7 +123,8 @@ export default {
             }
             console.log(this.listeCat)
         })
-  }
+  },
+  
 };
 </script>
 
