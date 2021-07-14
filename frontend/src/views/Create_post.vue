@@ -1,12 +1,22 @@
 <template>
   <form class="newPost">
     <div class="d-flex align-items-center bg-primary text-white">
-      <h6 class="modal-title mb-0" id="threadModalLabel">Nouveau post</h6>
+      <h6 class="modal-title mb-0 p-3" id="threadModalLabel">Nouveau post</h6>
     </div>
     <div class="modal-body">
+      <div>
+        <label for="categorie">Choisissez une categorie</label>
+        <select name="categorie" id="categorie" v-model="cat_id">
+          <option v-for="cat in listeCat" :value="cat.id" :key="cat"> {{ cat.name }}</option>
+        </select>
+        <div>
+          <button class="btn btn-primary">Ajouter une categorie</button>
+        </div>
+        
+      </div>
       <div class="form-group">
-        <label for="threadTitle">Titre</label>
-        <input type="text" class="form-control" id="threadTitle" placeholder="Entrez un titre" autofocus="" v-model="title"/>
+        <label for="threadTitle" class="mb-2">Titre</label>
+        <input type="text" class="form-control mb-2" id="threadTitle" placeholder="Entrez un titre" autofocus="" v-model="title"/>
       </div>
       <textarea class="form-control summernote" v-model="content"></textarea>
     </div>
@@ -30,7 +40,8 @@ export default {
     return{
       title:'',
       content:'',
-      cat_id: 1
+      cat_id: 1,
+      listeCat: [],
     }
   },
     computed: {
@@ -42,6 +53,7 @@ export default {
       this.$router.push('/')
     },
     post(){
+      console.log('cat id: ',this.cat_id)
       axios.post('http://127.0.0.1:3000/api/createPost',{
         title: this.title,
         content: this.content,
@@ -58,6 +70,16 @@ export default {
       })
     }
   },
+  mounted(){
+
+    axios.get('http://127.0.0.1:3000/api/categories')
+        .then(response =>{
+            for(let cat of response.data){
+                this.listeCat.push({id: cat.id, name: cat.name})
+            }
+            console.log(this.listeCat)
+        })
+  }
 };
 </script>
 

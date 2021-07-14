@@ -60,7 +60,7 @@ exports.getPostsById = (req,res,next) =>{
   })
 
   if(req.params.catId == 0){
-    con.query("SELECT posts.id, title, content, creation, pseudo, avatar FROM `posts` INNER JOIN users ON posts.user_id = users.id", (err,result) =>{
+    con.query("SELECT posts.id, title, content, creation, pseudo, avatar FROM `posts` INNER JOIN users ON posts.user_id = users.id ORDER BY creation DESC", (err,result) =>{
       if(err){
           console.log(err)
           return res.status(401).json({message: err})
@@ -69,7 +69,7 @@ exports.getPostsById = (req,res,next) =>{
       return res.status(200).json(result)
     })
   }else{
-    con.query("SELECT posts.id, title, content, creation, pseudo, avatar FROM `posts` INNER JOIN users ON posts.user_id = users.id WHERE category_id = " + req.params.catId + "", (err,result)=>{
+    con.query("SELECT posts.id, title, content, creation, pseudo, avatar FROM `posts` INNER JOIN users ON posts.user_id = users.id WHERE category_id = " + req.params.catId + " ORDER BY creation DESC", (err,result)=>{
       if(err){
         console.log(err)
         return res.status(401).json({message: err})
