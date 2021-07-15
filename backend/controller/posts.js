@@ -212,4 +212,30 @@ exports.addComment = (req, res, next) =>{
       return res.status(200).json({message: 'ok'})
   })
 }
+
+exports.getComment = (req, res, next) =>{
+  console.log('Commentaire pour post: ', req.params.id)
+
+  var con = mysql.createConnection(mysqlLogin);
+
+  con.connect((err) => {
+    if (err){
+        return res.status(401).json({message: 'impossible de se connecter à la BDD'})
+    }
+    console.log("Connecté à la base de donnée");
+    
+  })
+
+  con.query("SELECT * FROM comments WHERE post_id = " + req.params.id + " ORDER BY creation DESC", (err,result) =>{
+    if(err){
+      console.log(err)
+      return res.status(401).json({message: err})
+    }
+
+    console.log(result)
+    return res.status(200).json(result)
+  })
+
+  
+}
   

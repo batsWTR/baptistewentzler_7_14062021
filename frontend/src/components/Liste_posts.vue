@@ -19,10 +19,14 @@
                                 
                             </div>
                             <div class="text-muted small text-center align-self-center">
-                                <button><i class=" btn btn-light far fa-comment ml-2" data-bs-toggle="collapse" :data-bs-target="'#collapse' + post.id" role="button" aria-expanded="false" aria-controls="collapseComment"></i> 3</button>
+                                <button><i class=" btn btn-light far fa-comment ml-2" @click="getComment(post.id)" data-bs-toggle="collapse" :data-bs-target="'#collapse' + post.id" role="button" aria-expanded="false" aria-controls="collapseComment"></i></button>
                             </div>
                             <div class="collapse" :id="'collapse' + post.id">
-                                <p>comment</p>
+                                <div class="card my-3" v-for="com in commentList[post.id]" :key="com">
+                                    <span>De {{ com.user_id }} </span>
+                                    <span> le {{ com.creation }}</span>
+                                    <div class="card mt-2"> {{com.comment }} </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -41,7 +45,8 @@ export default {
   name: 'Liste_posts',
   data(){
     return{
-        comment: []
+        comment: [],
+        commentList: []
     }
   },
   methods:{
@@ -54,7 +59,11 @@ export default {
               userId: this.userId,
               postId: id,
               comment: this.comment[id]
-          })
+          },{
+                headers:{
+                Authorization: 'Bearer ' + this.token
+                }
+        })
           .then(response =>{
               console.log(response)
               this.comment[id]= ""
@@ -63,10 +72,22 @@ export default {
               console.log(err)
           })
         
+      },
+      getComment(id){
+          console.log('Commentaire pour le post: ', id)
+
+          axios.get('http://127.0.0.1:3000/api/comment/' + id)
+          .then(response =>{
+              this.commentList[id] = response.data
+              console.log('CommentList: ', this.commentList)
+          })
+          .catch(err =>{
+              console.log(err)
+          })
       }
   },
     computed: {
-    ...mapState(['userId', 'connected'])   
+    ...mapState(['userId', 'connected', 'token'])   
   },
   props: ['listeDesPosts']
 
