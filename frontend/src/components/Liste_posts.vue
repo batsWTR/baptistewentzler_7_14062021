@@ -14,7 +14,7 @@
                                 <p class="text-muted"><a href="javascript:void(0)">{{ post.pseudo }}</a> Crée <span class="text-secondary font-weight-bold">{{ post.creation }}</span></p>
                                 <div v-show="this.connected">
                                     <button type="button" class="btn btn-primary mr-3"  @click="addComment(post.id, comment)">Commenter</button>
-                                    <input type="text"  v-model="comment">
+                                    <input type="text"  v-model="comment[post.id]">
                                 </div>
                                 
                             </div>
@@ -41,23 +41,23 @@ export default {
   name: 'Liste_posts',
   data(){
     return{
- 
+        comment: []
     }
   },
   methods:{
       addComment(id){
           console.log('Ajout commentaire id: ', id)
           console.log('User id: ', this.userId)
-          console.log('Comment: ', this.comment)
+          console.log('Comment: ', this.comment[id])
 
           axios.post('http://127.0.0.1:3000/api/addComment', {
               userId: this.userId,
               postId: id,
-              comment: this.comment
+              comment: this.comment[id]
           })
           .then(response =>{
               console.log(response)
-            this.comment= ""
+              this.comment[id]= ""
           })
           .catch(err =>{
               console.log(err)
