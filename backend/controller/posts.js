@@ -236,7 +236,7 @@ exports.getComment = (req, res, next) =>{
     
   })
 
-  con.query("SELECT * FROM comments WHERE post_id = " + req.params.id + " ORDER BY creation DESC", (err,result) =>{
+  con.query("SELECT `pseudo`, `comment`, `user_id`, `post_id`, `creation` FROM `comments`  LEFT JOIN users ON comments.user_id = users.id WHERE post_id =" + req.params.id + " ORDER BY creation DESC", (err,result) =>{
     if(err){
       console.log(err)
       con.end()

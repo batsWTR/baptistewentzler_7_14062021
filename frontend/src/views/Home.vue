@@ -17,21 +17,14 @@
                 </button>
                 </router-link>
             </div>
-
-
             <!-- Liste categories -->
             <ListeCategories v-bind:listeCategories="listeCat" @selected-cat="selectedCat"/>
-            <!-- /Inner sidebar body -->
         </div>
-        <!-- /Inner sidebar -->
 
         <!-- Inner main -->
         <div class="inner-main">
             <!-- Barre de recherche -->
             <Recherche v-bind:listeCategories="listeCat"/>
-            <!-- /Inner main header -->
-
-            <!-- Inner main body -->
 
             <!-- Liste des posts -->
             <ListePosts v-bind:listeDesPosts="listePosts"/>

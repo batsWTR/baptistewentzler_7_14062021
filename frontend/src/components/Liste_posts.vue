@@ -1,5 +1,5 @@
 <template>
-    <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
+    <div class="inner-main-body p-2 p-sm-3">
         <ul>
             <li v-for="post in listeDesPosts" :key="post" style="list-style: none">
                 <div class="card mb-2">
@@ -23,7 +23,7 @@
                             </div>
                             <div class="collapse" :id="'collapse' + post.id">
                                 <div class="card my-3" v-for="com in commentList[post.id]" :key="com">
-                                    <span>De {{ com.user_id }} </span>
+                                    <span>De  <a href="">{{ com.pseudo }}</a> </span>
                                     <span> le {{ com.creation }}</span>
                                     <div class="card mt-2"> {{com.comment }} </div>
                                 </div>
