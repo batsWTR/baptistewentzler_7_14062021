@@ -12,9 +12,17 @@
                                     {{ post.content}}
                                 </p>
                                 <p class="text-muted"><a href="javascript:void(0)">{{ post.pseudo }}</a> Crée <span class="text-secondary font-weight-bold">{{ post.creation }}</span></p>
+                                <div v-show="this.connected">
+                                    <button type="button" class="btn btn-primary mr-3"  @click="addComment(post.id, comment)">Commenter</button>
+                                    <input type="text"  v-model="comment">
+                                </div>
+                                
                             </div>
                             <div class="text-muted small text-center align-self-center">
-                                <span><i class="far fa-comment ml-2"></i> 3</span>
+                                <button><i class=" btn btn-light far fa-comment ml-2" data-bs-toggle="collapse" :data-bs-target="'#collapse' + post.id" role="button" aria-expanded="false" aria-controls="collapseComment"></i> 3</button>
+                            </div>
+                            <div class="collapse" :id="'collapse' + post.id">
+                                <p>comment</p>
                             </div>
                         </div>
                     </div>
@@ -26,14 +34,39 @@
 
 
 <script>
-
+import { mapState } from 'vuex'
+import axios from "axios";
 
 export default {
   name: 'Liste_posts',
   data(){
     return{
-
+ 
     }
+  },
+  methods:{
+      addComment(id){
+          console.log('Ajout commentaire id: ', id)
+          console.log('User id: ', this.userId)
+          console.log('Comment: ', this.comment)
+
+          axios.post('http://127.0.0.1:3000/api/addComment', {
+              userId: this.userId,
+              postId: id,
+              comment: this.comment
+          })
+          .then(response =>{
+              console.log(response)
+            this.comment= ""
+          })
+          .catch(err =>{
+              console.log(err)
+          })
+        
+      }
+  },
+    computed: {
+    ...mapState(['userId', 'connected'])   
   },
   props: ['listeDesPosts']
 

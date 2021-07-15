@@ -35,7 +35,7 @@ exports.getPosts = (req,res,next) =>{
         
       });
 
-      con.query("SELECT posts.id, title, content, creation, pseudo, avatar FROM `posts` INNER JOIN users ON posts.user_id = users.id ORDER BY creation DESC", (err,result) =>{
+      con.query("SELECT posts.id, posts.user_id, title, content, creation, pseudo, avatar FROM `posts` INNER JOIN users ON posts.user_id = users.id ORDER BY creation DESC", (err,result) =>{
         if(err){
             console.log(err)
             return res.status(401).json({message: err})
@@ -60,7 +60,7 @@ exports.getPostsById = (req,res,next) =>{
   })
 
   if(req.params.catId == 0){
-    con.query("SELECT posts.id, title, content, creation, pseudo, avatar FROM `posts` INNER JOIN users ON posts.user_id = users.id ORDER BY creation DESC", (err,result) =>{
+    con.query("SELECT posts.id, posts.user_id, title, content, creation, pseudo, avatar FROM `posts` INNER JOIN users ON posts.user_id = users.id ORDER BY creation DESC", (err,result) =>{
       if(err){
           console.log(err)
           return res.status(401).json({message: err})
@@ -186,3 +186,30 @@ exports.addCategory = (req, res, next) =>{
 
   
 }
+
+exports.addComment = (req, res, next) =>{
+  console.log('Ajout commentaire')
+
+  console.log('User_id: ', req.body.userId)
+  console.log('Post id: ', req.body.postId)
+  console.log('Comment: ', req.body.comment)
+
+  var con = mysql.createConnection(mysqlLogin)
+
+  con.connect((err) => {
+    if (err){
+        return res.status(401).json({message: 'impossible de se connecter à la BDD'})
+    }
+  })
+    
+
+  con.query("INSERT INTO comments (comment, user_id, post_id) VALUES ('" + req.body.comment + "'," + req.body.userId + "," + req.body.postId + ")", (err,result) =>{
+      if(err){
+        console.log(err)
+        return res.status(401).json({message: err})
+      }
+
+      return res.status(200).json({message: 'ok'})
+  })
+}
+  

@@ -58,7 +58,7 @@ exports.login = (req, res, next)=>{
             }
             console.log('le mot de passe est valide')
             //res.status(200)
-            res.status(200).json({userId: result[0].id, pseudo: result[0].pseudo, email:result[0].mail,avatar: result[0].avatar, token: jwt.sign({userId:result[0].id}, 'secret_key', {expiresIn: '2h'})});
+            res.status(200).json({userId: result[0].id, pseudo: result[0].pseudo, email:result[0].mail,avatar: result[0].avatar, token: jwt.sign({userId:result[0].id}, 'secret_key', {expiresIn: '24h'})});
             })
         })
         con.end()
