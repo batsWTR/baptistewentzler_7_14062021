@@ -38,12 +38,14 @@ exports.getPosts = (req,res,next) =>{
       con.query("SELECT posts.id, posts.user_id, title, content, creation, pseudo, avatar FROM `posts` INNER JOIN users ON posts.user_id = users.id ORDER BY creation DESC", (err,result) =>{
         if(err){
             console.log(err)
+            con.end()
             return res.status(401).json({message: err})
         }
         console.log(result)
+        con.end()
         return res.status(200).json(result)
       })
-    con.end()
+    
 }
 
 exports.getPostsById = (req,res,next) =>{
@@ -63,18 +65,22 @@ exports.getPostsById = (req,res,next) =>{
     con.query("SELECT posts.id, posts.user_id, title, content, creation, pseudo, avatar FROM `posts` INNER JOIN users ON posts.user_id = users.id ORDER BY creation DESC", (err,result) =>{
       if(err){
           console.log(err)
+          con.end()
           return res.status(401).json({message: err})
       }
       console.log(result)
+      con.end()
       return res.status(200).json(result)
     })
   }else{
     con.query("SELECT posts.id, title, content, creation, pseudo, avatar FROM `posts` INNER JOIN users ON posts.user_id = users.id WHERE category_id = " + req.params.catId + " ORDER BY creation DESC", (err,result)=>{
       if(err){
         console.log(err)
+        con.end()
         return res.status(401).json({message: err})
       }
       console.log(result)
+      con.end()
       return res.status(200).json(result)
     })
   }
@@ -101,13 +107,13 @@ exports.getUsers = (req,res,next) =>{
   con.query("SELECT * FROM `users`", (err,result) =>{
     if(err){
         console.log(err)
+        con.end()
         return res.status(401).json({message: err})
     }
     console.log(result)
+    con.end()
     return res.status(200).json(result)
   })
-
-  con.end()
 }
 
 exports.createPost = (req,res,next) =>{
@@ -126,13 +132,14 @@ exports.createPost = (req,res,next) =>{
   con.query("INSERT INTO `posts`(`title`, `content`,`user_id`, `category_id`) VALUES ('" + req.body.title + "','" + req.body.content + "'," + req.body.user + "," + req.body.cat + ")", (err, result) =>{
     if(err){
       console.log(err)
+      con.end()
       return res.status(401).json({message: err})
     }
 
+    con.end()
     return res.status(200).json({message: 'ok'})
 
   })
-  con.end()
 }
 
 exports.getCat = (req,res,next) =>{
@@ -151,14 +158,14 @@ exports.getCat = (req,res,next) =>{
   con.query("SELECT * FROM categories", (err, result) =>{
     if(err){
       console.log(err)
+      con.end()
       return res.status(401).json({message: err})
     }
 
     console.log(result)
+    con.end()
     return res.status(200).json(result)
   })
-
-  con.end()
 }
 
 exports.addCategory = (req, res, next) =>{
@@ -179,8 +186,10 @@ exports.addCategory = (req, res, next) =>{
   con.query("INSERT INTO categories (name) VALUES ('" + req.body.category + "')", (err,result) =>{
     if(err){
       console.log(err)
+      con.end()
       return res.status(401).json({message: err})
     }
+    con.end()
     return res.status(200).json({message: 'ok'})
   })
 
@@ -206,9 +215,10 @@ exports.addComment = (req, res, next) =>{
   con.query("INSERT INTO comments (comment, user_id, post_id) VALUES ('" + req.body.comment + "'," + req.body.userId + "," + req.body.postId + ")", (err,result) =>{
       if(err){
         console.log(err)
+        con.end()
         return res.status(401).json({message: err})
       }
-
+      con.end()
       return res.status(200).json({message: 'ok'})
   })
 }
@@ -229,10 +239,12 @@ exports.getComment = (req, res, next) =>{
   con.query("SELECT * FROM comments WHERE post_id = " + req.params.id + " ORDER BY creation DESC", (err,result) =>{
     if(err){
       console.log(err)
+      con.end()
       return res.status(401).json({message: err})
     }
 
     console.log(result)
+    con.end()
     return res.status(200).json(result)
   })
 

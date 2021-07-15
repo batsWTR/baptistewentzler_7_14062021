@@ -55,6 +55,11 @@ export default {
           console.log('User id: ', this.userId)
           console.log('Comment: ', this.comment[id])
 
+          if(this.comment[id] == undefined){
+              console.log('commentaire vide')
+              return
+          }
+
           axios.post('http://127.0.0.1:3000/api/addComment', {
               userId: this.userId,
               postId: id,

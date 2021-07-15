@@ -58,10 +58,11 @@ exports.login = (req, res, next)=>{
             }
             console.log('le mot de passe est valide')
             //res.status(200)
+            con.end()
             res.status(200).json({userId: result[0].id, pseudo: result[0].pseudo, email:result[0].mail,avatar: result[0].avatar, token: jwt.sign({userId:result[0].id}, 'secret_key', {expiresIn: '24h'})});
             })
         })
-        con.end()
+        
 }
 
 
@@ -114,10 +115,11 @@ exports.signup = (req, res, next)=>{
                 return res.status(200).json({erreur: err.sqlMessage});
             }
             console.log("Votre compte a été crée");
+            con.end()
             return res.status(200).json( {message: 'OK'});
         });
 
-        con.end()
+        
 
         
     });
@@ -127,7 +129,7 @@ exports.signup = (req, res, next)=>{
 
 exports.updateProfile = (req, res, next) =>{
     console.log('update profile');
-    console.log(req.body.email)
+    console.log('mail: ',req.body.email)
     console.log(req.body.userId)
     console.log(req.body.pseudo)
     console.log(req.body.mdp)
@@ -148,6 +150,7 @@ exports.updateProfile = (req, res, next) =>{
               console.log(err)
               return res.status(200).json({message: 'NOK'})
           }
+
           console.log("modif pseudo et mail ok")
       })
     // modif avatar
@@ -157,10 +160,12 @@ exports.updateProfile = (req, res, next) =>{
         con.query("UPDATE users SET avatar='" + ch_avatar + "' WHERE id='" + req.body.userId + "'", function(err, result){
             if(err){
                 console.log(err)
+                con.end()
                 return res.status(200).json({message: 'NOK'})
             }
-            console.log("modif avatar ok")
+            
         })
+        console.log("modif avatar ok")
     }
 
     // modif mot de passe
@@ -172,6 +177,7 @@ exports.updateProfile = (req, res, next) =>{
             con.query("UPDATE users SET mdp='" + hash + "' WHERE id='" + req.body.userId + "'", function(err, result){
                 if(err){
                     console.log(err)
+                    con.end()
                     return res.status(200).json({message: 'NOK'})
                 }
                 console.log("modif mot de passe ok")
@@ -185,10 +191,9 @@ exports.updateProfile = (req, res, next) =>{
             console.log(err)
             return res.status(401).json({message: err})
         }
+        con.end()
         return res.status(200).json({userId:result[0].id, pseudo: result[0].pseudo, email:result[0].mail,avatar: result[0].avatar})
     })
-    
-    con.end()
 }
 
 exports.deleteUser = (req, res, next) =>{
@@ -208,6 +213,7 @@ exports.deleteUser = (req, res, next) =>{
     con.query("DELETE FROM users WHERE id = '" + req.params.id + "'", (err, result) =>{
         if(err){
             console.log(err)
+            con.end()
             return res.status(200).json({message: 'NOK'})
         }
         fs.unlink('./images/' + req.params.id, (url,err) =>{
@@ -216,6 +222,7 @@ exports.deleteUser = (req, res, next) =>{
             }
             console.log('Suppression image: ')
         } )
+        con.end()
         return res.status(200).json({message: 'ok'})
     })
     

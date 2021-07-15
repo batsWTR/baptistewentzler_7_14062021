@@ -1,6 +1,5 @@
 <template>
     <div class="inner-main-header">
-                <a class="nav-link nav-icon rounded-circle nav-link-faded mr-3 d-md-none" href="#" data-toggle="inner-sidebar"><i class="material-icons">arrow_forward_ios</i></a>
                 <select class="custom-select custom-select-sm w-auto mr-1">
                     <option selected="">Tous</option>
                     <option v-for="cat in listeCategories" :key="cat">{{ cat.name }}</option>
@@ -10,8 +9,6 @@
                 </span>
             </div>
 </template>
-
-
 <script>
 
 
