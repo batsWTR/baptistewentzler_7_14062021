@@ -19,7 +19,7 @@
                                 
                             </div>
                             <div class="text-muted small text-center align-self-center">
-                                <button><i class=" btn btn-light far fa-comment ml-2" @click="getComment(post.id)" data-bs-toggle="collapse" :data-bs-target="'#collapse' + post.id" role="button" aria-expanded="false" aria-controls="collapseComment"></i></button>
+                                <button><i class=" btn btn-light far fa-comment ml-2" @click="getComment(post.id)" data-bs-toggle="collapse" :data-bs-target="'#collapse' + post.id" role="button" aria-expanded="false" aria-controls="collapseComment"></i>{{ post.nb }}</button>
                             </div>
                             <div class="collapse" :id="'collapse' + post.id">
                                 <div class="card my-3" v-for="com in commentList[post.id]" :key="com">
