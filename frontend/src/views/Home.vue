@@ -77,7 +77,7 @@ export default {
         axios.get('http://127.0.0.1:3000/api/categories')
         .then(response =>{
             for(let cat of response.data){
-                this.listeCat.push({id: cat.id, name: cat.name})
+                this.listeCat.push({id: cat.id, name: cat.name, isActive: false})
             }
 
         })

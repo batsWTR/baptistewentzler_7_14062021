@@ -23,9 +23,13 @@
                             </div>
                             <div class="collapse" :id="'collapse' + post.id">
                                 <div class="card my-3" v-for="com in commentList[post.id]" :key="com">
-                                    <span>De  <a href="">{{ com.pseudo }}</a> </span>
-                                    <span> le {{ com.creation }}</span>
-                                    <div class="card mt-2"> {{com.comment }} </div>
+                                    <div class="card-body">
+                                        <div class="card title">
+                                            <span>De  <a href="">{{ com.pseudo }}</a> </span>
+                                            <span> le {{ com.creation }}</span>
+                                        </div>
+                                        <p class="card-text mt-3"> {{com.comment }} </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -72,6 +76,7 @@ export default {
           .then(response =>{
               console.log(response)
               this.comment[id]= ""
+              location.reload()
           })
           .catch(err =>{
               console.log(err)
