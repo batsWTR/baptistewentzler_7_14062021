@@ -16,6 +16,7 @@ router.post('/addCategory',auth, posts_ctrl.addCategory)
 router.post('/createPost',auth, posts_ctrl.createPost)
 router.post('/addComment',auth, posts_ctrl.addComment)
 router.get('/comment/:id', posts_ctrl.getComment)
+router.post('/search', posts_ctrl.search)
 
 
 

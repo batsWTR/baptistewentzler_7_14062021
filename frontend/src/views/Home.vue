@@ -24,7 +24,7 @@
         <!-- Inner main -->
         <div class="inner-main">
             <!-- Barre de recherche -->
-            <Recherche v-bind:listeCategories="listeCat"/>
+            <Recherche v-bind:listeCategories="listeCat" @recherche-posts="recherchePosts"/>
 
             <!-- Liste des posts -->
             <ListePosts v-bind:listeDesPosts="listePosts"/>
@@ -71,6 +71,9 @@ export default {
           .catch((error) =>{
         console.log('CAT ',error);
       })
+      },
+      recherchePosts(rech){
+          this.listePosts = rech
       }
   },
   mounted(){

@@ -19,7 +19,7 @@
         <ul class="navbar-nav ">
           <li class="nav-item">
             <button type="button" class="btn btn-outline-primary rounded-pill mx-lg-2 my-2 my-lg-0" v-show="connected" @click="disconnect">
-              Déconnection
+              Déconnexion
             </button>
           </li>
           <li class="nav-item">

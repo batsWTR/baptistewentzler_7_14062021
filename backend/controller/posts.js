@@ -250,4 +250,46 @@ exports.getComment = (req, res, next) =>{
 
   
 }
+
+exports.search = (req, res, next) =>{
+  console.log('Recherche')
+  console.log(req.body.recherche)
+  console.log(req.body.catId)
+
+  var con = mysql.createConnection(mysqlLogin);
+
+  con.connect((err) => {
+    if (err){
+        return res.status(401).json({message: 'impossible de se connecter à la BDD'})
+    }
+    console.log("Connecté à la base de donnée");
+    
+  })
+
+  if(req.body.catId == '0'){
+    con.query("SELECT posts.id, posts.title, posts.content, posts.creation, posts.user_id, posts.category_id, users.pseudo, users.avatar, COUNT(comments.id) AS nb FROM posts LEFT JOIN users ON posts.user_id = users.id  LEFT JOIN comments ON posts.id = comments.post_id WHERE content LIKE '%" + req.body.recherche +  "%' OR title LIKE '%" + req.body.recherche + "%' GROUP BY 1 ORDER BY posts.creation DESC", (err,result) =>{
+      if(err){
+        console.log(err)
+        con.end()
+        return res.status(401).json({message: err})
+      }
+
+      console.log(result)
+      con.end()
+      return res.status(200).json(result)
+    })
+  }else{
+    con.query("SELECT posts.id, posts.title, posts.content, posts.creation, posts.user_id, posts.category_id, users.pseudo, users.avatar, COUNT(comments.id) AS nb FROM posts LEFT JOIN users ON posts.user_id = users.id  LEFT JOIN comments ON posts.id = comments.post_id WHERE posts.category_id = "+ req.body.catId +" AND(content LIKE '%" + req.body.recherche +  "%' OR title LIKE '%" + req.body.recherche + "%')  GROUP BY 1 ORDER BY posts.creation DESC", (err,result) =>{
+      if(err){
+        console.log(err)
+        con.end()
+        return res.status(401).json({message: err})
+      }
+      console.log(result)
+      con.end()
+      return res.status(200).json(result)
+
+    })
+  }
+}
   
