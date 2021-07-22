@@ -11,7 +11,7 @@
                                 <p class="text-secondary">
                                     {{ post.content}}
                                 </p>
-                                <p class="text-muted"><a href="javascript:void(0)">{{ post.pseudo }}</a> Crée <span class="text-secondary font-weight-bold">{{ post.creation }}</span></p>
+                                <p class="text-muted"><a href="javascript:void(0)">{{ post.pseudo }}</a> Posté il y a <span class="text-secondary font-weight-bold">{{ calculDate(post.date) }}</span></p>
                                 <div v-show="this.connected">
                                     <button type="button" class="btn btn-primary mr-3"  @click="addComment(post.id, comment)">Commenter</button>
                                     <input type="text"  v-model="comment[post.id]">
@@ -26,7 +26,7 @@
                                     <div class="card-body">
                                         <div class="card title">
                                             <span>De  <a href="">{{ com.pseudo }}</a> </span>
-                                            <span> le {{ com.creation }}</span>
+                                            <span> Commenté il y a {{ calculDate(com.date) }}</span>
                                         </div>
                                         <p class="card-text mt-3"> {{com.comment }} </p>
                                     </div>
@@ -94,10 +94,30 @@ export default {
           .catch(err =>{
               console.log(err)
           })
-      }
+      },
+    calculDate(date){
+        console.log(typeof(date))
+        var tabDate = date.split(':')
+        console.log(tabDate)
+
+        if(tabDate[0] == 0 && tabDate[1] == 0){
+            return 'moins de 1 minute'
+        }else if(tabDate[0] == 0){
+            return tabDate[1] + ' minutes'
+        }else if (tabDate[0] < 24){
+            return tabDate[0] + ' Heures'
+        }else if(tabDate[0] < 169){
+            return Math.floor(parseInt(tabDate[0]) / 24) + ' jours'
+        }else if(tabDate[0] > 719){
+            return Math.floor(parseInt(tabDate[0]) / 720) + ' mois'
+        }
+    } 
+
   },
     computed: {
-    ...mapState(['userId', 'connected', 'token'])   
+    ...mapState(['userId', 'connected', 'token'])
+
+  
   },
   props: ['listeDesPosts']
 

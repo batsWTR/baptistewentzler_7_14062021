@@ -35,7 +35,7 @@ exports.getPosts = (req,res,next) =>{
         
       });
 
-      con.query("SELECT posts.id, posts.title, posts.content, posts.creation, posts.user_id, posts.category_id, users.pseudo, users.avatar, COUNT(comments.id) AS nb FROM posts LEFT JOIN users ON posts.user_id = users.id  LEFT JOIN comments ON posts.id = comments.post_id GROUP BY 1 ORDER BY posts.creation DESC", (err,result) =>{
+      con.query("SELECT posts.id, posts.title, posts.content, posts.user_id, posts.category_id, users.pseudo, users.avatar, COUNT(comments.id) AS nb, TIMEDIFF(NOW(), posts.creation) AS date FROM posts LEFT JOIN users ON posts.user_id = users.id  LEFT JOIN comments ON posts.id = comments.post_id GROUP BY 1 ORDER BY posts.creation DESC", (err,result) =>{
         if(err){
             console.log(err)
             con.end()
@@ -62,7 +62,7 @@ exports.getPostsById = (req,res,next) =>{
   })
 
   if(req.params.catId == 0){
-    con.query("SELECT posts.id, posts.title, posts.content, posts.creation, posts.user_id, posts.category_id, users.pseudo, users.avatar, COUNT(comments.id) AS nb FROM posts LEFT JOIN users ON posts.user_id = users.id  LEFT JOIN comments ON posts.id = comments.post_id GROUP BY 1 ORDER BY posts.creation DESC", (err,result) =>{
+    con.query("SELECT posts.id, posts.title, posts.content, posts.user_id, posts.category_id, users.pseudo, users.avatar, COUNT(comments.id) AS nb, TIMEDIFF(NOW(), posts.creation) AS date FROM posts LEFT JOIN users ON posts.user_id = users.id  LEFT JOIN comments ON posts.id = comments.post_id GROUP BY 1 ORDER BY posts.creation DESC", (err,result) =>{
       if(err){
           console.log(err)
           con.end()
@@ -73,7 +73,7 @@ exports.getPostsById = (req,res,next) =>{
       return res.status(200).json(result)
     })
   }else{
-    con.query("SELECT posts.id, posts.title, posts.content, posts.creation, posts.user_id, posts.category_id, users.pseudo, users.avatar, COUNT(comments.id) AS nb FROM posts LEFT JOIN users ON posts.user_id = users.id  LEFT JOIN comments ON posts.id = comments.post_id WHERE category_id = " + req.params.catId + " GROUP BY 1 ORDER BY posts.creation DESC", (err,result)=>{
+    con.query("SELECT posts.id, posts.title, posts.content, posts.user_id, posts.category_id, users.pseudo, users.avatar, COUNT(comments.id) AS nb, TIMEDIFF(NOW(), posts.creation) AS date FROM posts LEFT JOIN users ON posts.user_id = users.id  LEFT JOIN comments ON posts.id = comments.post_id WHERE category_id = " + req.params.catId + " GROUP BY 1 ORDER BY posts.creation DESC", (err,result)=>{
       if(err){
         console.log(err)
         con.end()
@@ -236,7 +236,7 @@ exports.getComment = (req, res, next) =>{
     
   })
 
-  con.query("SELECT `pseudo`, `comment`, `user_id`, `post_id`, `creation` FROM `comments`  LEFT JOIN users ON comments.user_id = users.id WHERE post_id =" + req.params.id + " ORDER BY creation DESC", (err,result) =>{
+  con.query("SELECT `pseudo`, `comment`, `user_id`, `post_id`, TIMEDIFF(NOW(), comments.creation) AS date FROM `comments`  LEFT JOIN users ON comments.user_id = users.id WHERE post_id =" + req.params.id + " ORDER BY creation DESC", (err,result) =>{
     if(err){
       console.log(err)
       con.end()
