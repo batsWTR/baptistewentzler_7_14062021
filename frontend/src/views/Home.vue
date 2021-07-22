@@ -64,9 +64,20 @@ export default {
   methods: {
       selectedCat(e){
           console.log('Cat id: ', e)
+
+          for(let i = 0; i <  this.listeCat.length; i++){
+              console.log('boucle: ',i)
+              if(this.listeCat[i].id == e){
+                  this.listeCat[i].isActive = true
+              }else{
+                  this.listeCat[i].isActive = false
+              }
+          }
+
           axios.get('http://127.0.0.1:3000/api/postsById/'+ e)
           .then(response =>{
               this.listePosts = response.data
+              
           })
           .catch((error) =>{
         console.log('CAT ',error);
@@ -79,6 +90,7 @@ export default {
   mounted(){
         axios.get('http://127.0.0.1:3000/api/categories')
         .then(response =>{
+            this.listeCat.push({id: 0, name: 'Tous', isActive: true})
             for(let cat of response.data){
                 this.listeCat.push({id: cat.id, name: cat.name, isActive: false})
             }
