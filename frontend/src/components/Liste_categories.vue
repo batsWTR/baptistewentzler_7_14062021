@@ -1,12 +1,11 @@
 <template>
-    <div class="inner-sidebar-body p-0">
-                <div class="p-3 h-100" data-simplebar="init">
-                    <div class="simplebar-wrapper" style="margin: -16px;">
-                        <div class="simplebar-height-auto-observer-wrapper"><div class="simplebar-height-auto-observer"></div></div>
-                        <div class="simplebar-mask">
-                            <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
-                                <div class="simplebar-content-wrapper" style="height: 100%; overflow: hidden scroll;">
-                                    <div class="simplebar-content" style="padding: 16px;">
+    <div class="p-0">
+                <div class="p-3">
+                    <div style="margin: -16px;">
+                        <div>
+                            <div style="right: 0px; bottom: 0px;">
+                                <div style="height: 100%; overflow: hidden scroll;">
+                                    <div style="padding: 16px;">
                                         <nav class="nav nav-pills nav-gap-y-1 flex-column">
                                             <a href="javascript:void(0)" class="nav-link nav-link-faded has-icon" :class="{active: cat.isActive == true}" @click="clickCat(cat.id)" v-for="cat in listeCategories" :key="cat">{{ cat.name }}</a>
                                         </nav>
@@ -14,10 +13,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="simplebar-placeholder" style="width: 234px; height: 292px;"></div>
+                        <div style="width: 234px; height: 50px;"></div>
                     </div>
-                    <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;"><div class="simplebar-scrollbar" style="width: 0px; display: none;"></div></div>
-                    <div class="simplebar-track simplebar-vertical" style="visibility: visible;"><div class="simplebar-scrollbar" style="height: 151px; display: block; transform: translate3d(0px, 0px, 0px);"></div></div>
                 </div>
             </div>
 </template>

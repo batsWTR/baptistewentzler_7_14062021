@@ -1,10 +1,10 @@
 <template>
-    <div class="inner-main-body p-2 p-sm-3">
+    <div class="p-2 p-sm-3">
         <ul>
             <li v-for="post in listeDesPosts" :key="post" style="list-style: none">
                 <div class="card mb-2">
                     <div class="card-body p-2 p-sm-3">
-                        <div class="media forum-item">
+                        <div>
                             <a href="#" data-toggle="collapse" data-target=".forum-content"><img :src="post.avatar" class="mr-3 rounded-circle" width="50" alt="User" /></a>
                             <div class="media-body">
                                 <h6><a href="#" data-toggle="collapse" data-target=".forum-content" class="text-body">{{post.title}}</a></h6>
