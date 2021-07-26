@@ -23,7 +23,7 @@ export default{
     },
     watch: {
         recherche: function(){
-            if(this.recherche.length > 3){
+            if(this.recherche.length > 2){
                 console.log(this.recherche)
                 console.log(this.$refs.choix.value)
                 axios.post('http://127.0.0.1:3000/api/search', {
