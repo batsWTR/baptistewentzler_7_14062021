@@ -1,7 +1,6 @@
 <template>
     <div class="inner-main-header">
                 <select class="custom-select custom-select-sm w-auto mr-1" ref="choix">
-                    <option selected value="0">Tous</option>
                     <option v-for="cat in listeCategories" :key="cat" :value="cat.id">{{ cat.name }}</option>
                 </select>
                 <span class="input-icon input-icon-sm ml-auto w-auto">
