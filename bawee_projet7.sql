@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql-bawee.alwaysdata.net
--- Generation Time: Jul 28, 2021 at 08:06 AM
+-- Generation Time: Jul 28, 2021 at 08:17 AM
 -- Server version: 10.5.11-MariaDB
 -- PHP Version: 7.4.19
 
@@ -20,6 +20,72 @@ SET time_zone = "+00:00";
 --
 -- Database: `bawee_projet7`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `categories`
+--
+
+CREATE TABLE `categories` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(40) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`id`, `name`) VALUES
+(1, 'general'),
+(15, 'espace'),
+(16, 'Garde');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `comment` varchar(255) NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `post_id` int(10) UNSIGNED NOT NULL,
+  `creation` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`id`, `comment`, `user_id`, `post_id`, `creation`) VALUES
+(35, 'deja fais !', 18, 35, '2021-07-23 09:12:15');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `posts`
+--
+
+CREATE TABLE `posts` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `title` varchar(40) NOT NULL,
+  `content` text NOT NULL,
+  `creation` datetime DEFAULT current_timestamp(),
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `category_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `posts`
+--
+
+INSERT INTO `posts` (`id`, `title`, `content`, `creation`, `user_id`, `category_id`) VALUES
+(34, 'bonjour', 'bonjour à tous merci pour l ajout', '2021-07-23 09:08:19', 17, 1),
+(35, 'a vous', 'des volontaires pour un voyage aux portes du cosmos ?', '2021-07-23 09:09:27', 17, 1),
+(36, 'salut', 'tres belle vue de la haut', '2021-07-23 09:13:41', 18, 15),
+(37, 'salut', 'quelqu\'un pour garder mon chat cet été ?', '2021-07-23 09:41:48', 18, 16);
 
 -- --------------------------------------------------------
 
@@ -48,6 +114,28 @@ INSERT INTO `users` (`id`, `pseudo`, `mail`, `mdp`, `avatar`) VALUES
 --
 
 --
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_comment_userId` (`user_id`),
+  ADD KEY `FK_comment_postId` (`post_id`);
+
+--
+-- Indexes for table `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_userId` (`user_id`),
+  ADD KEY `FK_catId` (`category_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -60,10 +148,46 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+
+--
+-- AUTO_INCREMENT for table `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `FK_comment_postId` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_comment_userId` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `posts`
+--
+ALTER TABLE `posts`
+  ADD CONSTRAINT `FK_catId` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_userId` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
