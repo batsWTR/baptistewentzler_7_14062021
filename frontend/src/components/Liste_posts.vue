@@ -97,7 +97,6 @@ export default {
       },
     calculDate(date){
         var tabDate = date.split(':')
-        console.log(tabDate)
 
         if(tabDate[0] == 0 && tabDate[1] == 0){
             return 'moins de 1 minute'
