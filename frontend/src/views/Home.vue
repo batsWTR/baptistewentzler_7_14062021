@@ -62,7 +62,6 @@ export default {
           console.log('Cat id: ', e)
 
           for(let i = 0; i <  this.listeCat.length; i++){
-              console.log('boucle: ',i)
               if(this.listeCat[i].id == e){
                   this.listeCat[i].isActive = true
               }else{
